@@ -207,6 +207,7 @@ async function startServer() {
   const apolloServer = new ApolloServer({
     typeDefs,
     resolvers,
+    introspection: true,
   });
 
   // Start Apollo before applying middleware
