@@ -2,13 +2,15 @@ import { createServer } from "http";
 import express from "express";
 import { ApolloServer, gql } from "apollo-server-express";
 
-import { prisma } from "./prisma/client";
+import { PrismaClient } from "@prisma/client";
 
 // Main function to run the server
 async function startServer() {
   // Create an instance of express and an http server
   const app = express();
   const httpServer = createServer(app);
+
+  const prisma = new PrismaClient();
 
   // Define API schema
   const typeDefs = gql`
