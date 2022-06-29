@@ -93,7 +93,13 @@ async function startServer() {
   const resolvers = {
     Query: {
       users() {
-        return prisma.user.findMany();
+        return prisma.user.findMany({
+          include: {
+            profile: true,
+            blogs: true,
+            BlogPost: true,
+          },
+        });
       },
       user(id: number) {
         return prisma.user.findUnique({
@@ -104,9 +110,7 @@ async function startServer() {
       },
 
       profiles() {
-        return prisma.profile.findMany({
-          include: { user: true },
-        });
+        return prisma.profile.findMany();
       },
       profile(id: number) {
         return prisma.profile.findUnique({
@@ -117,7 +121,9 @@ async function startServer() {
       },
 
       blogs() {
-        return prisma.blog.findMany();
+        return prisma.blog.findMany({
+          include: { author: true, BlogPost: true },
+        });
       },
       blog(id: number) {
         return prisma.blog.findUnique({
@@ -128,7 +134,13 @@ async function startServer() {
       },
 
       blogPosts() {
-        return prisma.blogPost.findMany();
+        return prisma.blogPost.findMany({
+          include: {
+            author: true,
+            blog: true,
+            BlogComment: true,
+          },
+        });
       },
       blogPost(id: number) {
         return prisma.blogPost.findUnique({
@@ -139,7 +151,12 @@ async function startServer() {
       },
 
       blogComments() {
-        return prisma.blogComment.findMany();
+        return prisma.blogComment.findMany({
+          include: {
+            author: true,
+            BlogComment: true,
+          },
+        });
       },
       blogComment(id: number) {
         return prisma.blogComment.findUnique({
