@@ -2,7 +2,7 @@ import { createServer } from "http";
 import express from "express";
 import { ApolloServer, gql } from "apollo-server-express";
 
-//const { prisma } = require("./prisma/client");
+import { prisma } from "./prisma/client";
 
 // Main function to run the server
 async function startServer() {
@@ -13,14 +13,20 @@ async function startServer() {
   // Define API schema
   const typeDefs = gql`
     type Query {
-      hello: String
+      users: [Users]
+    }
+
+    type User {
+      id: ID!
     }
   `;
 
   // Resolvers for handling the logic and response of each typeDef
   const resolvers = {
     Query: {
-      hello: () => "Hello world!",
+      users: () => {
+        prisma.user.findMany();
+      },
     },
   };
 

@@ -12,7 +12,7 @@ model User {
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
   BlogPost    BlogPost[]
-  Profile     Profile[]
+  profile     Profile?
   Blog        Blog[]
   BlogComment BlogComment[]
 }
@@ -21,8 +21,9 @@ model Profile {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  authorId  Int
-  author    User     @relation(fields: [authorId], references: [id])
+  userId    Int      @unique
+  User      User     @relation(fields: [userId], references: [id])
+  username  String   @default("") @db.VarChar(255)
 }
 
 model Blog {
@@ -58,8 +59,8 @@ model BlogComment {
   authorId    Int
   author      User          @relation(fields: [authorId], references: [id])
   blogPostId  Int
-  blogPose    BlogPost      @relation(fields: [blogPostId], references: [id])
-  parentId    Int
-  parent      BlogComment   @relation("Parent", fields: [parentId], references: [id])
+  blogPost    BlogPost      @relation(fields: [blogPostId], references: [id])
+  parentId    Int?
+  parent      BlogComment?  @relation("Parent", fields: [parentId], references: [id])
   BlogComment BlogComment[] @relation("Parent")
 }
