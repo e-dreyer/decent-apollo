@@ -2,10 +2,10 @@ import { createServer } from "http";
 import express from "express";
 import { ApolloServer, gql } from "apollo-server-express";
 
-const { prisma } = require("../prisma/client");
+//const { prisma } = require("./prisma/client");
 
 // Main function to run the server
-const startServer = async () => {
+async function startServer() {
   // Create an instance of express and an http server
   const app = express();
   const httpServer = createServer(app);
@@ -43,7 +43,7 @@ const startServer = async () => {
   httpServer.listen({ port: process.env.PORT || 4000 }, () =>
     console.log(`Server listening on localhost:4000${apolloServer.graphqlPath}`)
   );
-};
+}
 
 // Start the server
 startServer();
