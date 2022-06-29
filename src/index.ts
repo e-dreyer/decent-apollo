@@ -34,6 +34,7 @@ async function startServer() {
       blogs: [Blog]!
       blogPosts: [BlogPost]!
       blogComments: [BlogComment]!
+      username: String
     }
 
     type Profile {
@@ -41,7 +42,6 @@ async function startServer() {
       createdAt: String!
       updatedAt: String!
       user: User!
-      username: String
     }
 
     type Blog {
