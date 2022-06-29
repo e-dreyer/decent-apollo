@@ -14,9 +14,9 @@ async function main() {
   const allBlogComments = await prisma.blogComment.findMany();
   console.log(allUsers);
   console.log(allProfiles);
-  //  console.log(allBlogs);
-  //  console.log(allBlogPosts);
-  //  console.log(allBlogComments);
+  console.log(allBlogs);
+  console.log(allBlogPosts);
+  console.log(allBlogComments);
 }
 
 // Main function to run the server
@@ -31,16 +31,16 @@ async function startServer() {
       id: ID!
       createdAt: String!
       updatedAt: String!
-      blogs: [Blog]
-      blogPosts: [BlogPost]
-      blogComments: [BlogComment]
+      blogs: [Blog]!
+      blogPosts: [BlogPost]!
+      blogComments: [BlogComment]!
     }
 
     type Profile {
       id: ID!
       createdAt: String!
       updatedAt: String!
-      user: User
+      user: User!
       username: String
     }
 
@@ -48,19 +48,19 @@ async function startServer() {
       id: ID!
       createdAt: String!
       updatedAt: String!
-      author: User
+      author: User!
       name: String!
       description: String
-      blogPosts: [BlogPost]
+      blogPosts: [BlogPost]!
     }
 
     type BlogPost {
       id: ID!
       createdAt: String!
       updatedAt: String!
-      author: User
+      author: User!
       blog: Blog!
-      blogComments: [BlogComment]
+      blogComments: [BlogComment]!
       title: String!
       content: String!
     }
@@ -69,10 +69,10 @@ async function startServer() {
       id: ID!
       createdAt: String!
       updatedAt: String!
-      author: User
-      blogPost: BlogPost
-      parent: BlogComment
-      content: String
+      author: User!
+      blogPost: BlogPost!
+      parent: BlogComment!
+      content: String!
     }
 
     type Query {
@@ -97,7 +97,7 @@ async function startServer() {
           include: {
             profile: true,
             blogs: true,
-            BlogPost: true,
+            blogPosts: true,
             blogComments: true,
           },
         });
@@ -110,7 +110,7 @@ async function startServer() {
           include: {
             profile: true,
             blogs: true,
-            BlogPost: true,
+            blogPosts: true,
             blogComments: true,
           },
         });
