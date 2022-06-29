@@ -14,12 +14,6 @@ async function startServer() {
 
   // Define API schema
   const typeDefs = gql`
-    type Query {
-      users: [User]
-      profiles: [Profile]
-      blogs: [Blog]
-    }
-
     type User {
       id: ID!
     }
@@ -30,6 +24,12 @@ async function startServer() {
 
     type Blog {
       id: ID!
+    }
+
+    type Query {
+      users: [User]
+      profiles: [Profile]
+      blogs: [Blog]
     }
   `;
 
