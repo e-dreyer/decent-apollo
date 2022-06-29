@@ -13,8 +13,8 @@ model User {
   updatedAt   DateTime      @updatedAt
   BlogPost    BlogPost[]
   profile     Profile?
-  Blog        Blog[]
-  BlogComment BlogComment[]
+  blogs       Blog[]
+  blogComments BlogComment[]
 }
 
 model Profile {
@@ -22,7 +22,7 @@ model Profile {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   userId    Int      @unique
-  User      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
   username  String   @default("") @db.VarChar(255)
 }
 
@@ -34,7 +34,7 @@ model Blog {
   description String?
   authorId    Int
   author      User       @relation(fields: [authorId], references: [id])
-  BlogPost    BlogPost[]
+  blogPosts    BlogPost[]
 }
 
 model BlogPost {
@@ -48,7 +48,7 @@ model BlogPost {
   author      User          @relation(fields: [authorId], references: [id])
   blogId      Int
   blog        Blog          @relation(fields: [blogId], references: [id])
-  BlogComment BlogComment[]
+  blogComments BlogComment[]
 }
 
 model BlogComment {
@@ -62,5 +62,5 @@ model BlogComment {
   blogPost    BlogPost      @relation(fields: [blogPostId], references: [id])
   parentId    Int?
   parent      BlogComment?  @relation("Parent", fields: [parentId], references: [id])
-  BlogComment BlogComment[] @relation("Parent")
+  blogComments BlogComment[] @relation("Parent")
 }
