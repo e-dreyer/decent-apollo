@@ -13,10 +13,20 @@ async function startServer() {
   // Define API schema
   const typeDefs = gql`
     type Query {
-      users: [Users]
+      users: [User]
+      profiles: [Profile]
+      blogs: [Blog]
     }
 
     type User {
+      id: ID!
+    }
+
+    type Profile {
+      id: ID!
+    }
+
+    type Blog {
       id: ID!
     }
   `;
@@ -26,6 +36,12 @@ async function startServer() {
     Query: {
       users: () => {
         prisma.user.findMany();
+      },
+      profiles: () => {
+        prisma.profile.findMany();
+      },
+      blogs: () => {
+        prisma.blog.findMany();
       },
     },
   };
