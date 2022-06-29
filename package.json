@@ -1,0 +1,10 @@
+{
+  "name": "decent-apollo",
+  "version": "1.0.0",
+  "description": "Apollo, Prisma and Postgres implementation of decent-web",
+  "main": "index.js",
+  "repository": "https://github.com/e-dreyer/decent-apollo.git",
+  "author": "erik.dreyer@protonmail.com",
+  "license": "CC0",
+  "private": false
+}
