@@ -98,6 +98,7 @@ async function startServer() {
             profile: true,
             blogs: true,
             BlogPost: true,
+            blogComments: true,
           },
         });
       },
@@ -106,29 +107,49 @@ async function startServer() {
           where: {
             id: id,
           },
+          include: {
+            profile: true,
+            blogs: true,
+            BlogPost: true,
+            blogComments: true,
+          },
         });
       },
 
       profiles() {
-        return prisma.profile.findMany();
+        return prisma.profile.findMany({
+          include: {
+            user: true,
+          },
+        });
       },
       profile(id: number) {
         return prisma.profile.findUnique({
           where: {
             id: id,
           },
+          include: {
+            user: true,
+          },
         });
       },
 
       blogs() {
         return prisma.blog.findMany({
-          include: { author: true, BlogPost: true },
+          include: {
+            author: true,
+            blogPosts: true,
+          },
         });
       },
       blog(id: number) {
         return prisma.blog.findUnique({
           where: {
             id: id,
+          },
+          include: {
+            author: true,
+            blogPosts: true,
           },
         });
       },
@@ -138,7 +159,7 @@ async function startServer() {
           include: {
             author: true,
             blog: true,
-            BlogComment: true,
+            blogComments: true,
           },
         });
       },
@@ -147,6 +168,11 @@ async function startServer() {
           where: {
             id: id,
           },
+          include: {
+            author: true,
+            blog: true,
+            blogComments: true,
+          },
         });
       },
 
@@ -154,7 +180,9 @@ async function startServer() {
         return prisma.blogComment.findMany({
           include: {
             author: true,
-            BlogComment: true,
+            blogPost: true,
+            blogComments: true,
+            parent: true,
           },
         });
       },
@@ -162,6 +190,12 @@ async function startServer() {
         return prisma.blogComment.findUnique({
           where: {
             id: id,
+          },
+          include: {
+            author: true,
+            blogPost: true,
+            blogComments: true,
+            parent: true,
           },
         });
       },
