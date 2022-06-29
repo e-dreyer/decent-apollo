@@ -104,7 +104,9 @@ async function startServer() {
       },
 
       profiles() {
-        return prisma.profile.findMany();
+        return prisma.profile.findMany({
+          include: { user: true },
+        });
       },
       profile(id: number) {
         return prisma.profile.findUnique({
