@@ -31,9 +31,9 @@ async function startServer() {
       id: ID!
       createdAt: String!
       updatedAt: String!
-      blogs: [Blog]!
-      blogPosts: [BlogPost]!
-      blogComments: [BlogComment]!
+      blogs: [Blog]
+      blogPosts: [BlogPost]
+      blogComments: [BlogComment]
       username: String!
       email: String!
     }
