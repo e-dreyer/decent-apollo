@@ -1,0 +1,65 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id          Int           @id @default(autoincrement())
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  BlogPost    BlogPost[]
+  Profile     Profile[]
+  Blog        Blog[]
+  BlogComment BlogComment[]
+}
+
+model Profile {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  authorId  Int
+  author    User     @relation(fields: [authorId], references: [id])
+}
+
+model Blog {
+  id          Int        @id @default(autoincrement())
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  name        String     @db.VarChar(255)
+  description String?
+  authorId    Int
+  author      User       @relation(fields: [authorId], references: [id])
+  BlogPost    BlogPost[]
+}
+
+model BlogPost {
+  id          Int           @id @default(autoincrement())
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  title       String        @db.VarChar(255)
+  content     String?
+  published   Boolean       @default(false)
+  authorId    Int
+  author      User          @relation(fields: [authorId], references: [id])
+  blogId      Int
+  blog        Blog          @relation(fields: [blogId], references: [id])
+  BlogComment BlogComment[]
+}
+
+model BlogComment {
+  id          Int           @id @default(autoincrement())
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  content     String?
+  authorId    Int
+  author      User          @relation(fields: [authorId], references: [id])
+  blogPostId  Int
+  blogPose    BlogPost      @relation(fields: [blogPostId], references: [id])
+  parentId    Int
+  parent      BlogComment   @relation("Parent", fields: [parentId], references: [id])
+  BlogComment BlogComment[] @relation("Parent")
+}
