@@ -34,13 +34,13 @@ async function startServer() {
   // Resolvers for handling the logic and response of each typeDef
   const resolvers = {
     Query: {
-      users: () => {
+      users() {
         prisma.user.findMany();
       },
-      profiles: () => {
+      profiles() {
         prisma.profile.findMany();
       },
-      blogs: () => {
+      blogs() {
         prisma.blog.findMany();
       },
     },
