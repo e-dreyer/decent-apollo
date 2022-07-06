@@ -8,7 +8,7 @@
   "license": "CC0-1.0",
   "private": false,
   "scripts": {
-    "build": "npm run build:nexus-typegen && tsc",
+    "build": "npm run build:nexus-typegen",
     "start": "ts-node-dev --no-notify --transpile-only --respawn src/index.ts",
     "migrate": "npx prisma db push",
     "build:nexus-typegen": "ts-node --transpile-only src/index"
