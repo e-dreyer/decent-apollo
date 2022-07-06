@@ -6,19 +6,6 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-async function main() {
-  const allUsers = await prisma.user.findMany();
-  const allProfiles = await prisma.profile.findMany();
-  const allBlogs = await prisma.blog.findMany();
-  const allBlogPosts = await prisma.blogPost.findMany();
-  const allBlogComments = await prisma.blogComment.findMany();
-  console.log(allUsers);
-  console.log(allProfiles);
-  console.log(allBlogs);
-  console.log(allBlogPosts);
-  console.log(allBlogComments);
-}
-
 // Main function to run the server
 async function startServer() {
   // Create an instance of express and an http server
@@ -43,6 +30,7 @@ async function startServer() {
       createdAt: String!
       updatedAt: String!
       user: User!
+      bio: String!
     }
 
     type Blog {
