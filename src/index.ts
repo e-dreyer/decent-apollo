@@ -1,8 +1,10 @@
 import { createServer } from "http";
 import express from "express";
 import { ApolloServer, gql } from "apollo-server-express";
-
 import { PrismaClient } from "@prisma/client";
+import * as path from 'path'
+import * as types from "./types"
+import { makeSchema} from 'nexus'
 
 const prisma = new PrismaClient();
 
@@ -193,8 +195,28 @@ async function startServer() {
 
   // Initialize the Apollo Server
   const apolloServer = new ApolloServer({
-    typeDefs,
-    resolvers,
+    context: () => ({ prisma }),
+    schema: makeSchema({
+      sourceTypes: {
+        modules: [{ module: ".prisma/client", alias: "PrismaClient" }],
+      },
+      contextType: {
+        module: path.join(__dirname, "context.ts"),
+        export: "Context",
+      },
+      outputs: {
+        typegen: path.join(
+          __dirname,
+          "../generated/types.d.ts"
+        ),
+        schema: path.join(__dirname, "../generated/api.graphql"),
+      },
+      shouldExitAfterGenerateArtifacts: Boolean(
+        process.env.NEXUS_SHOULD_EXIT_AFTER_REFLECTION
+      ),
+      types,
+    }),
+
     introspection: true,
   });
 
