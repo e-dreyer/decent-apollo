@@ -7,6 +7,8 @@ const server = new ApolloServer({
   context: context,
 })
 
-server.listen( process.env.PORT || 3001, '0.0.0.0', () => {
-  console.log(`Server is running on port: ${process.env.PORT}`);
-});
+server.listen().then(async ({ url }) => {
+  console.log(`\
+🚀 Server ready at: ${url}
+  `)
+})
