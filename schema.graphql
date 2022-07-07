@@ -13,6 +13,10 @@ type Blog {
   updatedAt: DateTime
 }
 
+input BlogByIdInput {
+  id: Int
+}
+
 type BlogComment {
   author: User
   authorId: Int!
@@ -27,6 +31,10 @@ type BlogComment {
   updatedAt: DateTime
 }
 
+input BlogCommentByIdInput {
+  id: Int
+}
+
 type BlogPost {
   author: User
   authorId: Int!
@@ -39,6 +47,10 @@ type BlogPost {
   published: Boolean
   title: String
   updatedAt: DateTime
+}
+
+input BlogPostByIdInput {
+  id: Int
 }
 
 """
@@ -59,12 +71,21 @@ type Profile {
   userId: Int!
 }
 
+input ProfileByIdInput {
+  id: Int
+}
+
 type Query {
   allBlogComments: [BlogComment]
   allBlogPosts: [BlogPost]
   allBlogs: [Blog]
   allProfiles: [Profile]
   allUsers: [User]
+  blogById(blogByIdInput: BlogByIdInput!): Blog
+  blogCommentById(blogCommentByIdInput: BlogCommentByIdInput!): BlogComment
+  blogPostById(blogPostByIdInput: BlogPostByIdInput!): BlogPost
+  profileById(profileByIdInput: ProfileByIdInput!): Profile
+  userById(userByIdInput: UserByIdInput!): User
 }
 
 enum SortOrder {
@@ -82,4 +103,8 @@ type User {
   profile: Profile
   updatedAt: DateTime
   username: String!
+}
+
+input UserByIdInput {
+  id: Int
 }
