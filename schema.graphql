@@ -46,6 +46,10 @@ A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `dat
 """
 scalar DateTime
 
+input PostOrderById {
+  id: SortOrder
+}
+
 type Profile {
   bio: String
   createdAt: DateTime
@@ -56,11 +60,16 @@ type Profile {
 }
 
 type Query {
-  blogComments: [BlogComment]
-  blogPosts: [BlogPost]
-  blogs: [Blog]
-  profiles: [Profile]
-  users: [User]
+  allBlogComments: [BlogComment]
+  allBlogPosts: [BlogPost]
+  allBlogs: [Blog]
+  allProfiles: [Profile]
+  allUsers: [User]
+}
+
+enum SortOrder {
+  asc
+  desc
 }
 
 type User {
