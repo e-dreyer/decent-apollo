@@ -276,6 +276,7 @@ const Query = objectType({
   definition(t) {
     t.list.field('allUsers', {
       type: User,
+      description: 'Query all Users',
       resolve: async (_parent, _args, context: Context) => {
         return context.prisma.user.findMany()
       },
@@ -283,6 +284,7 @@ const Query = objectType({
 
     t.list.field('allProfiles', {
       type: Profile,
+      description: 'Query all Profiles',
       resolve: async (_parent, _args, context: Context) => {
         return context.prisma.profile.findMany()
       },
@@ -290,6 +292,7 @@ const Query = objectType({
 
     t.list.field('allBlogs', {
       type: Blog,
+      description: 'Query all Blogs',
       resolve: async (_parent, _args, context: Context) => {
         return context.prisma.blog.findMany()
       },
@@ -297,6 +300,7 @@ const Query = objectType({
 
     t.list.field('allBlogPosts', {
       type: BlogPost,
+      description: 'Query all BlogPosts',
       resolve: async (_parent, _args, context: Context) => {
         return context.prisma.blogPost.findMany()
       },
@@ -304,6 +308,7 @@ const Query = objectType({
 
     t.list.field('allBlogComments', {
       type: BlogComment,
+      description: 'Query all BlogComments',
       resolve: async (_parent, _args, context: Context) => {
         return context.prisma.blogComment.findMany()
       },
@@ -311,6 +316,7 @@ const Query = objectType({
 
     t.nullable.field('userById', {
       type: User,
+      description: 'Query for a single User by Id',
       args: {
         userByIdInput: nonNull(arg({type: UserByIdInput}))
       },
@@ -325,6 +331,7 @@ const Query = objectType({
 
     t.nullable.field('profileById', {
       type: Profile,
+      description: 'Query for a single Profile by Id',
       args: {
         profileByIdInput: nonNull(arg({type: ProfileByIdInput}))
       },
@@ -339,6 +346,7 @@ const Query = objectType({
 
     t.nullable.field('blogById', {
       type: Blog,
+      description: 'Query for a single Blog by Id',
       args: {
         blogByIdInput: nonNull(arg({type: BlogByIdInput}))
       },
@@ -353,6 +361,7 @@ const Query = objectType({
 
     t.nullable.field('blogPostById', {
       type: BlogPost,
+      description: 'Query for a single BlogPost by Id',
       args: {
         blogPostByIdInput: nonNull(arg({type: BlogPostByIdInput}))
       },
@@ -367,6 +376,7 @@ const Query = objectType({
 
     t.nullable.field('blogCommentById', {
       type: BlogComment,
+      description: 'Query for a single BlogComment by Id',
       args: {
         blogCommentByIdInput: nonNull(arg({type: BlogCommentByIdInput}))
       },
@@ -395,6 +405,7 @@ const PostOrderById = inputObjectType({
 
 const UserByIdInput = inputObjectType({
   name: 'UserByIdInput',
+  description: 'Input arguments for quering Users by Id',
   definition(t) {
     t.field('id', {
       type: 'Int',
@@ -404,6 +415,7 @@ const UserByIdInput = inputObjectType({
 
 const ProfileByIdInput = inputObjectType({
   name: 'ProfileByIdInput',
+  description: 'Input arguments for quering Profiles by Id',
   definition(t) {
     t.field('id', {
       type: 'Int',
@@ -413,6 +425,7 @@ const ProfileByIdInput = inputObjectType({
 
 const BlogByIdInput = inputObjectType({
   name: 'BlogByIdInput',
+  description: 'Input arguments for quering Blogs by Id',
   definition(t) {
     t.field('id', {
       type: 'Int'
@@ -422,6 +435,7 @@ const BlogByIdInput = inputObjectType({
 
 const BlogPostByIdInput = inputObjectType({
   name: 'BlogPostByIdInput',
+  description: 'Input arguments for quering BlogPosts by Id',
   definition(t) {
     t.field('id', {
       type: 'Int'
@@ -431,6 +445,7 @@ const BlogPostByIdInput = inputObjectType({
 
 const BlogCommentByIdInput = inputObjectType({
   name: 'BlogCommentByIdInput',
+  description: 'Input arguments for quering Blogs by Id',
   definition(t) {
     t.field('id', {
       type: 'Int'
