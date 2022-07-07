@@ -10,7 +10,7 @@ import {
   enumType,
 } from 'nexus'
 import { DateTimeResolver } from 'graphql-scalars'
-import { Context } from './context'
+import { context, Context } from './context'
 
 export const DateTime = asNexusMethod(DateTimeResolver, 'DateTime')
 
@@ -308,47 +308,170 @@ const Query = objectType({
         return context.prisma.blogComment.findMany()
       },
     })
+
+    t.nullable.field('userById', {
+      type: User,
+      args: {
+        userByIdInput: nonNull(arg({type: UserByIdInput}))
+      },
+      resolve: async (_parent, args, context: Context) => {
+        return context.prisma.user.findUnique({
+          where: {
+            id: args.userByIdInput.id || undefined
+          }
+        })
+      }
+    })
+
+    t.nullable.field('profileById', {
+      type: Profile,
+      args: {
+        profileByIdInput: nonNull(arg({type: ProfileByIdInput}))
+      },
+      resolve: async (_parent, args, context: Context) => {
+        return context.prisma.profile.findUnique({
+          where: {
+            id: args.profileByIdInput.id || undefined,
+          },
+        })
+      },
+    })
+
+    t.nullable.field('blogById', {
+      type: Blog,
+      args: {
+        blogByIdInput: nonNull(arg({type: BlogByIdInput}))
+      },
+      resolve: async (_parent, args, context: Context) => {
+        return context.prisma.blog.findUnique({
+          where: {
+            id: args.blogByIdInput.id || undefined
+          }
+        })
+      }
+    })
+
+    t.nullable.field('blogPostById', {
+      type: BlogPost,
+      args: {
+        blogPostByIdInput: nonNull(arg({type: BlogPostByIdInput}))
+      },
+      resolve: async (_parent, args, context: Context) => {
+        return context.prisma.blogPost.findUnique({
+          where: {
+            id: args.blogPostByIdInput.id || undefined
+          }
+        })
+      }
+    })
+
+    t.nullable.field('blogCommentById', {
+      type: BlogComment,
+      args: {
+        blogCommentByIdInput: nonNull(arg({type: BlogCommentByIdInput}))
+      },
+      resolve: async (_parent, args, context: Context) => {
+        return context.prisma.blogComment.findUnique({
+          where: {
+            id: args.blogCommentByIdInput.id || undefined
+          }
+        })
+      }
+    })
   },
 })
 
 const SortOrder = enumType({
-    name: 'SortOrder',
-    members: ['asc', 'desc']
+  name: 'SortOrder',
+  members: ['asc', 'desc'],
 })
 
 const PostOrderById = inputObjectType({
-    name: 'PostOrderById',
-    definition(t) {
-        t.field('id', {type: SortOrder})
-    }
+  name: 'PostOrderById',
+  definition(t) {
+    t.field('id', { type: SortOrder })
+  },
+})
+
+const UserByIdInput = inputObjectType({
+  name: 'UserByIdInput',
+  definition(t) {
+    t.field('id', {
+      type: 'Int',
+    })
+  }  
+})
+
+const ProfileByIdInput = inputObjectType({
+  name: 'ProfileByIdInput',
+  definition(t) {
+    t.field('id', {
+      type: 'Int',
+    })
+  },
+})
+
+const BlogByIdInput = inputObjectType({
+  name: 'BlogByIdInput',
+  definition(t) {
+    t.field('id', {
+      type: 'Int'
+    })
+  }
+})
+
+const BlogPostByIdInput = inputObjectType({
+  name: 'BlogPostByIdInput',
+  definition(t) {
+    t.field('id', {
+      type: 'Int'
+    })
+  }
+})
+
+const BlogCommentByIdInput = inputObjectType({
+  name: 'BlogCommentByIdInput',
+  definition(t) {
+    t.field('id', {
+      type: 'Int'
+    })
+  },
 })
 
 export const schema = makeSchema({
-    types: [
-        Query,
-        DateTime,
-        Profile,
-        User,
-        Blog,
-        BlogPost,
-        BlogComment,
-        SortOrder,
-        PostOrderById
+  types: [
+    Query,
+    DateTime,
+
+    Profile,
+    User,
+    Blog,
+    BlogPost,
+    BlogComment,
+
+    SortOrder,
+    PostOrderById,
+
+    UserByIdInput,
+    ProfileByIdInput,
+    BlogByIdInput,
+    BlogPostByIdInput,
+    BlogCommentByIdInput,
+  ],
+  outputs: {
+    schema: __dirname + '/../schema.graphql',
+    typegen: __dirname + '/generated/nexus.ts',
+  },
+  contextType: {
+    module: require.resolve('./context'),
+    export: 'Context',
+  },
+  sourceTypes: {
+    modules: [
+      {
+        module: '@prisma/client',
+        alias: 'prisma',
+      },
     ],
-    outputs: {
-        schema: __dirname + '/../schema.graphql',
-        typegen: __dirname + '/generated/nexus.ts'
-    },
-    contextType: {
-        module: require.resolve('./context'),
-        export: 'Context'
-    },
-    sourceTypes: {
-        modules: [
-            {
-                module: '@prisma/client',
-                alias: 'prisma'
-            }
-        ]
-    }
+  },
 })
