@@ -392,12 +392,12 @@ const Query = objectType({
       type: Profile,
       description: 'Query for a single Profile by Id',
       args: {
-        profileByIdInput: nonNull(arg({ type: ProfileByIdInput })),
+        data: nonNull(arg({ type: ProfileByIdInput })),
       },
       resolve: async (_parent, args, context: Context) => {
         return context.prisma.profile.findUnique({
           where: {
-            id: args.profileByIdInput.id || undefined,
+            id: args.data.id || undefined,
           },
         })
       },
@@ -407,12 +407,12 @@ const Query = objectType({
       type: Blog,
       description: 'Query for a single Blog by Id',
       args: {
-        blogByIdInput: nonNull(arg({ type: BlogByIdInput })),
+        data: nonNull(arg({ type: BlogByIdInput })),
       },
       resolve: async (_parent, args, context: Context) => {
         return context.prisma.blog.findUnique({
           where: {
-            id: args.blogByIdInput.id || undefined,
+            id: args.data.id || undefined,
           },
         })
       },
@@ -422,12 +422,12 @@ const Query = objectType({
       type: Blog,
       description: 'Query for all Blogs that belong to a specific User',
       args: {
-        blogsByUserIdInput: nonNull(arg({ type: BlogsByUserIdInput })),
+        data: nonNull(arg({ type: BlogsByUserIdInput })),
       },
       resolve: async (_parent, args, context: Context) => {
         return context.prisma.blog.findMany({
           where: {
-            authorId: args.blogsByUserIdInput.userId,
+            authorId: args.data.id,
           },
         })
       },
@@ -437,12 +437,12 @@ const Query = objectType({
       type: BlogPost,
       description: 'Query for a single BlogPost by Id',
       args: {
-        blogPostByIdInput: nonNull(arg({ type: BlogPostByIdInput })),
+        data: nonNull(arg({ type: BlogPostByIdInput })),
       },
       resolve: async (_parent, args, context: Context) => {
         return context.prisma.blogPost.findUnique({
           where: {
-            id: args.blogPostByIdInput.id || undefined,
+            id: args.data.id || undefined,
           },
         })
       },
@@ -452,12 +452,12 @@ const Query = objectType({
       type: BlogPost,
       description: 'Query for all BlogPosts that belong to a specific User',
       args: {
-        blogPostsByUserIdInput: nonNull(arg({ type: BlogPostsByUserIdInput })),
+        data: nonNull(arg({ type: BlogPostsByUserIdInput })),
       },
       resolve: async (_parent, args, context: Context) => {
         return context.prisma.blogPost.findMany({
           where: {
-            authorId: args.blogPostsByUserIdInput.userId,
+            authorId: args.data.id,
           },
         })
       },
@@ -467,12 +467,12 @@ const Query = objectType({
       type: BlogPost,
       description: 'Query for all BlogPosts that belong to a specific Blog',
       args: {
-        blogPostsByBlogIdInput: nonNull(arg({ type: BlogPostsByBlogIdInput })),
+        data: nonNull(arg({ type: BlogPostsByBlogIdInput })),
       },
       resolve: async (_parent, args, context: Context) => {
         return context.prisma.blogPost.findMany({
           where: {
-            authorId: args.blogPostsByBlogIdInput.blogId,
+            authorId: args.data.id,
           },
         })
       },
@@ -482,12 +482,12 @@ const Query = objectType({
       type: BlogComment,
       description: 'Query for a single BlogComment by Id',
       args: {
-        blogCommentByIdInput: nonNull(arg({ type: BlogCommentByIdInput })),
+        data: nonNull(arg({ type: BlogCommentByIdInput })),
       },
       resolve: async (_parent, args, context: Context) => {
         return context.prisma.blogComment.findUnique({
           where: {
-            id: args.blogCommentByIdInput.id || undefined,
+            id: args.data.id || undefined,
           },
         })
       },
@@ -497,14 +497,14 @@ const Query = objectType({
       type: BlogComment,
       description: 'Query for all BlogComments that belong to a specific User',
       args: {
-        blogCommentsByUserIdInput: nonNull(
+        data: nonNull(
           arg({ type: BlogCommentsByUserIdInput }),
         ),
       },
       resolve: async (_parent, args, context: Context) => {
         return context.prisma.blogComment.findMany({
           where: {
-            authorId: args.blogCommentsByUserIdInput.userId,
+            authorId: args.data.id,
           },
         })
       },
@@ -515,14 +515,14 @@ const Query = objectType({
       description:
         'Query for all BlogComments that belong to a specific BlogPost',
       args: {
-        blogCommentsByPostIdInput: nonNull(
+        data: nonNull(
           arg({ type: BlogCommentsByPostIdInput }),
         ),
       },
       resolve: async (_parent, args, context: Context) => {
         return context.prisma.blogComment.findMany({
           where: {
-            blogPostId: args.blogCommentsByPostIdInput.postId,
+            blogPostId: args.data.id,
           },
         })
       },
@@ -533,14 +533,14 @@ const Query = objectType({
       description:
         'Query for all BlogComments that belong to a specific Parent BlogComment',
       args: {
-        blogCommentsByParentCommentIdInput: nonNull(
+        data: nonNull(
           arg({ type: BlogCommentsByParentCommentIdInput }),
         ),
       },
       resolve: async (_parent, args, context: Context) => {
         return context.prisma.blogComment.findMany({
           where: {
-            parentId: args.blogCommentsByParentCommentIdInput.parentId,
+            parentId: args.data.id,
           },
         })
       },
@@ -562,7 +562,7 @@ const PostOrderById = inputObjectType({
 
 const UserByIdInput = inputObjectType({
   name: 'UserByIdInput',
-  description: 'Input arguments for quering Users by Id',
+  description: 'Input arguments for querying Users by Id',
   definition(t) {
     t.nonNull.field('id', {
       type: 'Int',
@@ -572,7 +572,7 @@ const UserByIdInput = inputObjectType({
 
 const ProfileByIdInput = inputObjectType({
   name: 'ProfileByIdInput',
-  description: 'Input arguments for quering Profiles by Id',
+  description: 'Input arguments for querying Profiles by Id',
   definition(t) {
     t.nonNull.field('id', {
       type: 'Int',
@@ -582,7 +582,7 @@ const ProfileByIdInput = inputObjectType({
 
 const BlogByIdInput = inputObjectType({
   name: 'BlogByIdInput',
-  description: 'Input arguments for quering Blogs by Id',
+  description: 'Input arguments for querying Blogs by Id',
   definition(t) {
     t.nonNull.field('id', {
       type: 'Int',
@@ -593,9 +593,9 @@ const BlogByIdInput = inputObjectType({
 const BlogsByUserIdInput = inputObjectType({
   name: 'BlogsByUserIdInput',
   description:
-    'Input arguments for quering Blogs by User Id. Search for the Blogs of a specific User',
+    'Input arguments for querying Blogs by User Id. Search for the Blogs of a specific User',
   definition(t) {
-    t.nonNull.field('userId', {
+    t.nonNull.field('id', {
       type: 'Int',
       description: 'The Id of the User that the Blogs belongs to',
     })
@@ -604,7 +604,7 @@ const BlogsByUserIdInput = inputObjectType({
 
 const BlogPostByIdInput = inputObjectType({
   name: 'BlogPostByIdInput',
-  description: 'Input arguments for quering BlogPosts by Id',
+  description: 'Input arguments for querying BlogPosts by Id',
   definition(t) {
     t.nonNull.field('id', {
       type: 'Int',
@@ -615,9 +615,9 @@ const BlogPostByIdInput = inputObjectType({
 const BlogPostsByUserIdInput = inputObjectType({
   name: 'BlogPostsByUserIdInput',
   description:
-    'Input arguments for quering BlogPosts by a User Id. Search for the BlogPosts of a specific User',
+    'Input arguments for querying BlogPosts by a User Id. Search for the BlogPosts of a specific User',
   definition(t) {
-    t.nonNull.field('userId', {
+    t.nonNull.field('id', {
       type: 'Int',
       description: 'The Id of the User that the Post belongs to',
     })
@@ -626,9 +626,9 @@ const BlogPostsByUserIdInput = inputObjectType({
 
 const BlogPostsByBlogIdInput = inputObjectType({
   name: 'BlogPostsByBlogIdInput',
-  description: 'Input arguments for quering all BlogPosts for a given Blog id',
+  description: 'Input arguments for querying all BlogPosts for a given Blog id',
   definition(t) {
-    t.nonNull.field('blogId', {
+    t.nonNull.field('id', {
       type: 'Int',
       description: 'The Id of the Blog that the BlogPost belongs to',
     })
@@ -637,7 +637,7 @@ const BlogPostsByBlogIdInput = inputObjectType({
 
 const BlogCommentByIdInput = inputObjectType({
   name: 'BlogCommentByIdInput',
-  description: 'Input arguments for quering Blogs by Id',
+  description: 'Input arguments for querying Blogs by Id',
   definition(t) {
     t.nonNull.field('id', {
       type: 'Int',
@@ -648,9 +648,9 @@ const BlogCommentByIdInput = inputObjectType({
 const BlogCommentsByUserIdInput = inputObjectType({
   name: 'BlogCommentsByUserIdInput',
   description:
-    'Input arguments for quering BlogComments by User Id. Search for BlogComments of a specific User',
+    'Input arguments for querying BlogComments by User Id. Search for BlogComments of a specific User',
   definition(t) {
-    t.nonNull.field('userId', {
+    t.nonNull.field('id', {
       type: 'Int',
       description: 'The Id of the User that the BlogComment belongs to',
     })
@@ -660,9 +660,9 @@ const BlogCommentsByUserIdInput = inputObjectType({
 const BlogCommentsByPostIdInput = inputObjectType({
   name: 'BlogCommentsByPostIdInput',
   description:
-    'Input arguments for quering BlogComments by BlogPost Id. Search for the BlogComments of a specific BlogPost',
+    'Input arguments for querying BlogComments by BlogPost Id. Search for the BlogComments of a specific BlogPost',
   definition(t) {
-    t.nonNull.field('postId', {
+    t.nonNull.field('id', {
       type: 'Int',
       description: 'The Id of the BlogPost that the BlogComments belongs to',
     })
@@ -672,9 +672,9 @@ const BlogCommentsByPostIdInput = inputObjectType({
 const BlogCommentsByParentCommentIdInput = inputObjectType({
   name: 'BlogCommentsByParentCommentIdInput',
   description:
-    'Input arguments for quering BlogComments by their Parent BlogComment Id. Search for the BlogComments that replied to a specific BlogComment',
+    'Input arguments for querying BlogComments by their Parent BlogComment Id. Search for the BlogComments that replied to a specific BlogComment',
   definition(t) {
-    t.nonNull.field('parentId', {
+    t.nonNull.field('id', {
       type: 'Int',
       description:
         'The Id of the Parent BlogComment of the BlogComment to search for',

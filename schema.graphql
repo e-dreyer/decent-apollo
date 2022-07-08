@@ -31,7 +31,7 @@ type Blog {
   updatedAt: DateTime!
 }
 
-"""Input arguments for quering Blogs by Id"""
+"""Input arguments for querying Blogs by Id"""
 input BlogByIdInput {
   id: Int!
 }
@@ -76,33 +76,33 @@ type BlogComment {
   updatedAt: DateTime!
 }
 
-"""Input arguments for quering Blogs by Id"""
+"""Input arguments for querying Blogs by Id"""
 input BlogCommentByIdInput {
   id: Int!
 }
 
 """
-Input arguments for quering BlogComments by their Parent BlogComment Id. Search for the BlogComments that replied to a specific BlogComment
+Input arguments for querying BlogComments by their Parent BlogComment Id. Search for the BlogComments that replied to a specific BlogComment
 """
 input BlogCommentsByParentCommentIdInput {
   """The Id of the Parent BlogComment of the BlogComment to search for"""
-  parentId: Int!
+  id: Int!
 }
 
 """
-Input arguments for quering BlogComments by BlogPost Id. Search for the BlogComments of a specific BlogPost
+Input arguments for querying BlogComments by BlogPost Id. Search for the BlogComments of a specific BlogPost
 """
 input BlogCommentsByPostIdInput {
   """The Id of the BlogPost that the BlogComments belongs to"""
-  postId: Int!
+  id: Int!
 }
 
 """
-Input arguments for quering BlogComments by User Id. Search for BlogComments of a specific User
+Input arguments for querying BlogComments by User Id. Search for BlogComments of a specific User
 """
 input BlogCommentsByUserIdInput {
   """The Id of the User that the BlogComment belongs to"""
-  userId: Int!
+  id: Int!
 }
 
 """Represents a User created BlogPost that belongs to a User and a Blog"""
@@ -143,31 +143,31 @@ type BlogPost {
   updatedAt: DateTime!
 }
 
-"""Input arguments for quering BlogPosts by Id"""
+"""Input arguments for querying BlogPosts by Id"""
 input BlogPostByIdInput {
   id: Int!
 }
 
-"""Input arguments for quering all BlogPosts for a given Blog id"""
+"""Input arguments for querying all BlogPosts for a given Blog id"""
 input BlogPostsByBlogIdInput {
   """The Id of the Blog that the BlogPost belongs to"""
-  blogId: Int!
+  id: Int!
 }
 
 """
-Input arguments for quering BlogPosts by a User Id. Search for the BlogPosts of a specific User
+Input arguments for querying BlogPosts by a User Id. Search for the BlogPosts of a specific User
 """
 input BlogPostsByUserIdInput {
   """The Id of the User that the Post belongs to"""
-  userId: Int!
+  id: Int!
 }
 
 """
-Input arguments for quering Blogs by User Id. Search for the Blogs of a specific User
+Input arguments for querying Blogs by User Id. Search for the Blogs of a specific User
 """
 input BlogsByUserIdInput {
   """The Id of the User that the Blogs belongs to"""
-  userId: Int!
+  id: Int!
 }
 
 """
@@ -204,7 +204,7 @@ type Profile {
   userId: Int!
 }
 
-"""Input arguments for quering Profiles by Id"""
+"""Input arguments for querying Profiles by Id"""
 input ProfileByIdInput {
   id: Int!
 }
@@ -226,36 +226,36 @@ type Query {
   allUsers: [User]
 
   """Query for a single Blog by Id"""
-  blogById(blogByIdInput: BlogByIdInput!): Blog
+  blogById(data: BlogByIdInput!): Blog
 
   """Query for a single BlogComment by Id"""
-  blogCommentById(blogCommentByIdInput: BlogCommentByIdInput!): BlogComment
+  blogCommentById(data: BlogCommentByIdInput!): BlogComment
 
   """
   Query for all BlogComments that belong to a specific Parent BlogComment
   """
-  blogCommentsByParentCommentId(blogCommentsByParentCommentIdInput: BlogCommentsByParentCommentIdInput!): [BlogComment]
+  blogCommentsByParentCommentId(data: BlogCommentsByParentCommentIdInput!): [BlogComment]
 
   """Query for all BlogComments that belong to a specific BlogPost"""
-  blogCommentsByPostId(blogCommentsByPostIdInput: BlogCommentsByPostIdInput!): [BlogComment]
+  blogCommentsByPostId(data: BlogCommentsByPostIdInput!): [BlogComment]
 
   """Query for all BlogComments that belong to a specific User"""
-  blogCommentsByUserId(blogCommentsByUserIdInput: BlogCommentsByUserIdInput!): [BlogComment]
+  blogCommentsByUserId(data: BlogCommentsByUserIdInput!): [BlogComment]
 
   """Query for a single BlogPost by Id"""
-  blogPostById(blogPostByIdInput: BlogPostByIdInput!): BlogPost
+  blogPostById(data: BlogPostByIdInput!): BlogPost
 
   """Query for all BlogPosts that belong to a specific Blog"""
-  blogPostsByBlogId(blogPostsByBlogIdInput: BlogPostsByBlogIdInput!): [BlogPost]
+  blogPostsByBlogId(data: BlogPostsByBlogIdInput!): [BlogPost]
 
   """Query for all BlogPosts that belong to a specific User"""
-  blogPostsByUserId(blogPostsByUserIdInput: BlogPostsByUserIdInput!): [BlogPost]
+  blogPostsByUserId(data: BlogPostsByUserIdInput!): [BlogPost]
 
   """Query for all Blogs that belong to a specific User"""
-  blogsByUserId(blogsByUserIdInput: BlogsByUserIdInput!): [Blog]
+  blogsByUserId(data: BlogsByUserIdInput!): [Blog]
 
   """Query for a single Profile by Id"""
-  profileById(profileByIdInput: ProfileByIdInput!): Profile
+  profileById(data: ProfileByIdInput!): Profile
 
   """Query for a single User by Id"""
   userById(userByIdInput: UserByIdInput!): User
@@ -298,7 +298,7 @@ type User {
   username: String!
 }
 
-"""Input arguments for quering Users by Id"""
+"""Input arguments for querying Users by Id"""
 input UserByIdInput {
   id: Int!
 }
