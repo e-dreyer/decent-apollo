@@ -18,7 +18,7 @@ export const Profile = objectType({
   description: 'Stores information regarding a User. Each User can only have one Profile',
   definition(t) {
     t.nonNull.field('id', {
-      type: nonNull('Int'),
+      type: nonNull('String'),
       description: 'Unique Id of the Profile'
     })
     t.nonNull.field('createdAt', { 
@@ -41,7 +41,7 @@ export const Profile = objectType({
       },
     })
     t.nonNull.field('userId', {
-      type: nullable('Int'),
+      type: nullable('String'),
       description: 'Unique Id of the User that the Profile belongs to'
     })
     t.nonNull.field('bio', {
@@ -56,7 +56,7 @@ export const User = objectType({
   description: 'Represents a unique User of the App. The User is used as reference of ownership for all other Objects',
   definition(t) {
     t.nonNull.field('id', {
-      type: nonNull('Int'),
+      type: nonNull('String'),
       description: 'Unique Id of the User'
     })
     t.nonNull.field('createdAt', { 
@@ -127,7 +127,7 @@ export const Blog = objectType({
   description: 'Represents a topic or group of related BlogPosts. All BlogPosts are stored under a certain Blog',
   definition(t) {
     t.nonNull.field('id', {
-      type: nonNull('Int'),
+      type: nonNull('String'),
       description: 'The unique Id of the Blog'
     })
     t.nonNull.field('createdAt', { 
@@ -150,7 +150,7 @@ export const Blog = objectType({
       },
     })
     t.nonNull.field('authorId', {
-      type: 'Int',
+      type: 'String',
       description: 'The unique Id of the User that created the Blog'
     })
     t.nonNull.field('name', {
@@ -180,7 +180,7 @@ export const BlogPost = objectType({
   description: 'Represents a User created BlogPost that belongs to a User and a Blog',
   definition(t) {
     t.nonNull.field('id', {
-      type: nonNull('Int'),
+      type: nonNull('String'),
       description: 'The unique Id of the BlogPost'
     })
     t.nonNull.field('createdAt', { 
@@ -203,7 +203,7 @@ export const BlogPost = objectType({
       },
     })
     t.nonNull.field('authorId', {
-      type: 'Int',
+      type: 'String',
       description: "The unique Id of the User that created the BlogPost"
     })
     t.nonNull.field('title', {
@@ -230,7 +230,7 @@ export const BlogPost = objectType({
       },
     })
     t.field('blogId', {
-      type: nonNull('Int'),
+      type: nonNull('String'),
       description: 'The Id of the Blog that the BlogPost belongs to'
     })
     t.nonNull.list.field('blogComments', {
@@ -252,7 +252,7 @@ export const BlogComment = objectType({
   description: 'User created replies to BlogPosts or other BlogComments',
   definition(t) {
     t.nonNull.field('id', {
-      type: nonNull('Int'),
+      type: nonNull('String'),
       description: 'The unique Id of the BlogComment',
     })
     t.nonNull.field('createdAt', { 
@@ -275,7 +275,7 @@ export const BlogComment = objectType({
       },
     })
     t.nonNull.field('authorId', {
-      type: nonNull('Int'),
+      type: nonNull('String'),
       description: 'The Id of the User that created the BlogComment',
     })
     t.field('blogPost', {
@@ -290,7 +290,7 @@ export const BlogComment = objectType({
       },
     })
     t.nonNull.field('blogPostId', {
-      type: 'Int',
+      type: 'String',
       description: 'The Id of the BlogPost that the BlogComment belongs to',
     })
     t.field('content', {
@@ -313,7 +313,7 @@ export const BlogComment = objectType({
       },
     })
     t.field('parentId', {
-      type: 'Int',
+      type: 'String',
       description: 'The Id of the Parent BlogComment. Can be Null if the BlogComment has no Parent',
     })
     t.nonNull.list.field('blogComments', {
@@ -565,7 +565,7 @@ const UserByIdInput = inputObjectType({
   description: 'Input arguments for querying Users by Id',
   definition(t) {
     t.nonNull.field('id', {
-      type: 'Int',
+      type: 'String',
     })
   },
 })
@@ -575,7 +575,7 @@ const ProfileByIdInput = inputObjectType({
   description: 'Input arguments for querying Profiles by Id',
   definition(t) {
     t.nonNull.field('id', {
-      type: 'Int',
+      type: 'String',
     })
   },
 })
@@ -585,7 +585,7 @@ const BlogByIdInput = inputObjectType({
   description: 'Input arguments for querying Blogs by Id',
   definition(t) {
     t.nonNull.field('id', {
-      type: 'Int',
+      type: 'String',
     })
   },
 })
@@ -596,7 +596,7 @@ const BlogsByUserIdInput = inputObjectType({
     'Input arguments for querying Blogs by User Id. Search for the Blogs of a specific User',
   definition(t) {
     t.nonNull.field('id', {
-      type: 'Int',
+      type: 'String',
       description: 'The Id of the User that the Blogs belongs to',
     })
   },
@@ -607,7 +607,7 @@ const BlogPostByIdInput = inputObjectType({
   description: 'Input arguments for querying BlogPosts by Id',
   definition(t) {
     t.nonNull.field('id', {
-      type: 'Int',
+      type: 'String',
     })
   },
 })
@@ -618,7 +618,7 @@ const BlogPostsByUserIdInput = inputObjectType({
     'Input arguments for querying BlogPosts by a User Id. Search for the BlogPosts of a specific User',
   definition(t) {
     t.nonNull.field('id', {
-      type: 'Int',
+      type: 'String',
       description: 'The Id of the User that the Post belongs to',
     })
   },
@@ -629,7 +629,7 @@ const BlogPostsByBlogIdInput = inputObjectType({
   description: 'Input arguments for querying all BlogPosts for a given Blog id',
   definition(t) {
     t.nonNull.field('id', {
-      type: 'Int',
+      type: 'String',
       description: 'The Id of the Blog that the BlogPost belongs to',
     })
   },
@@ -640,7 +640,7 @@ const BlogCommentByIdInput = inputObjectType({
   description: 'Input arguments for querying Blogs by Id',
   definition(t) {
     t.nonNull.field('id', {
-      type: 'Int',
+      type: 'String',
     })
   },
 })
@@ -651,7 +651,7 @@ const BlogCommentsByUserIdInput = inputObjectType({
     'Input arguments for querying BlogComments by User Id. Search for BlogComments of a specific User',
   definition(t) {
     t.nonNull.field('id', {
-      type: 'Int',
+      type: 'String',
       description: 'The Id of the User that the BlogComment belongs to',
     })
   },
@@ -663,7 +663,7 @@ const BlogCommentsByPostIdInput = inputObjectType({
     'Input arguments for querying BlogComments by BlogPost Id. Search for the BlogComments of a specific BlogPost',
   definition(t) {
     t.nonNull.field('id', {
-      type: 'Int',
+      type: 'String',
       description: 'The Id of the BlogPost that the BlogComments belongs to',
     })
   },
@@ -675,7 +675,7 @@ const BlogCommentsByParentCommentIdInput = inputObjectType({
     'Input arguments for querying BlogComments by their Parent BlogComment Id. Search for the BlogComments that replied to a specific BlogComment',
   definition(t) {
     t.nonNull.field('id', {
-      type: 'Int',
+      type: 'String',
       description:
         'The Id of the Parent BlogComment of the BlogComment to search for',
     })

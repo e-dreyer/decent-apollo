@@ -10,7 +10,7 @@ type Blog {
   author: User
 
   """The unique Id of the User that created the Blog"""
-  authorId: Int!
+  authorId: String!
 
   """All BlogPosts that belongs to the Blog"""
   blogPosts: [BlogPost]!
@@ -22,7 +22,7 @@ type Blog {
   description: String
 
   """The unique Id of the Blog"""
-  id: Int!
+  id: String!
 
   """The unique human readable name of the Blog"""
   name: String!
@@ -33,7 +33,7 @@ type Blog {
 
 """Input arguments for querying Blogs by Id"""
 input BlogByIdInput {
-  id: Int!
+  id: String!
 }
 
 """User created replies to BlogPosts or other BlogComments"""
@@ -42,7 +42,7 @@ type BlogComment {
   author: User
 
   """The Id of the User that created the BlogComment"""
-  authorId: Int!
+  authorId: String!
 
   """The BlogComments that are children of this BlogComment"""
   blogComments: [BlogComment]!
@@ -51,7 +51,7 @@ type BlogComment {
   blogPost: BlogPost
 
   """The Id of the BlogPost that the BlogComment belongs to"""
-  blogPostId: Int!
+  blogPostId: String!
 
   """The User created content of the BlogComment"""
   content: String
@@ -60,7 +60,7 @@ type BlogComment {
   createdAt: DateTime!
 
   """The unique Id of the BlogComment"""
-  id: Int!
+  id: String!
 
   """
   The Parent BlogComment of the BlogComment. Can be Null if the BlogComment is a direct reply to the BlogPost and not to a BlogComment
@@ -70,7 +70,7 @@ type BlogComment {
   """
   The Id of the Parent BlogComment. Can be Null if the BlogComment has no Parent
   """
-  parentId: Int
+  parentId: String
 
   """Time of last update"""
   updatedAt: DateTime!
@@ -78,7 +78,7 @@ type BlogComment {
 
 """Input arguments for querying Blogs by Id"""
 input BlogCommentByIdInput {
-  id: Int!
+  id: String!
 }
 
 """
@@ -86,7 +86,7 @@ Input arguments for querying BlogComments by their Parent BlogComment Id. Search
 """
 input BlogCommentsByParentCommentIdInput {
   """The Id of the Parent BlogComment of the BlogComment to search for"""
-  id: Int!
+  id: String!
 }
 
 """
@@ -94,7 +94,7 @@ Input arguments for querying BlogComments by BlogPost Id. Search for the BlogCom
 """
 input BlogCommentsByPostIdInput {
   """The Id of the BlogPost that the BlogComments belongs to"""
-  id: Int!
+  id: String!
 }
 
 """
@@ -102,7 +102,7 @@ Input arguments for querying BlogComments by User Id. Search for BlogComments of
 """
 input BlogCommentsByUserIdInput {
   """The Id of the User that the BlogComment belongs to"""
-  id: Int!
+  id: String!
 }
 
 """Represents a User created BlogPost that belongs to a User and a Blog"""
@@ -111,7 +111,7 @@ type BlogPost {
   author: User
 
   """The unique Id of the User that created the BlogPost"""
-  authorId: Int!
+  authorId: String!
 
   """The Blog that the BlogPost belongs to"""
   blog: Blog
@@ -120,7 +120,7 @@ type BlogPost {
   blogComments: [BlogComment]!
 
   """The Id of the Blog that the BlogPost belongs to"""
-  blogId: Int!
+  blogId: String!
 
   """The human readable Content set by the User"""
   content: String
@@ -129,7 +129,7 @@ type BlogPost {
   createdAt: DateTime!
 
   """The unique Id of the BlogPost"""
-  id: Int!
+  id: String!
 
   """
   Boolean value of whether the User has published the BlogPost and want it to be shown publicly
@@ -145,13 +145,13 @@ type BlogPost {
 
 """Input arguments for querying BlogPosts by Id"""
 input BlogPostByIdInput {
-  id: Int!
+  id: String!
 }
 
 """Input arguments for querying all BlogPosts for a given Blog id"""
 input BlogPostsByBlogIdInput {
   """The Id of the Blog that the BlogPost belongs to"""
-  id: Int!
+  id: String!
 }
 
 """
@@ -159,7 +159,7 @@ Input arguments for querying BlogPosts by a User Id. Search for the BlogPosts of
 """
 input BlogPostsByUserIdInput {
   """The Id of the User that the Post belongs to"""
-  id: Int!
+  id: String!
 }
 
 """
@@ -167,7 +167,7 @@ Input arguments for querying Blogs by User Id. Search for the Blogs of a specifi
 """
 input BlogsByUserIdInput {
   """The Id of the User that the Blogs belongs to"""
-  id: Int!
+  id: String!
 }
 
 """
@@ -192,7 +192,7 @@ type Profile {
   createdAt: DateTime!
 
   """Unique Id of the Profile"""
-  id: Int!
+  id: String!
 
   """Time of last update"""
   updatedAt: DateTime!
@@ -201,12 +201,12 @@ type Profile {
   user: User
 
   """Unique Id of the User that the Profile belongs to"""
-  userId: Int!
+  userId: String!
 }
 
 """Input arguments for querying Profiles by Id"""
 input ProfileByIdInput {
-  id: Int!
+  id: String!
 }
 
 type Query {
@@ -286,7 +286,7 @@ type User {
   email: String!
 
   """Unique Id of the User"""
-  id: Int!
+  id: String!
 
   """The Profile that belongs to the User"""
   profile: Profile
@@ -300,5 +300,5 @@ type User {
 
 """Input arguments for querying Users by Id"""
 input UserByIdInput {
-  id: Int!
+  id: String!
 }
