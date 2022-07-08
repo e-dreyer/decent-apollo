@@ -1,101 +1,95 @@
 import {
-  intArg,
   makeSchema,
   nonNull,
   objectType,
-  stringArg,
   inputObjectType,
   arg,
   asNexusMethod,
   enumType,
+  nullable,
 } from 'nexus'
 import { DateTimeResolver } from 'graphql-scalars'
-import { context, Context } from './context'
+import { Context } from './context'
 
 export const DateTime = asNexusMethod(DateTimeResolver, 'DateTime')
 
 export const Profile = objectType({
   name: 'Profile',
   definition(t) {
-    t.field('id', {
+    t.nonNull.field('id', {
       type: nonNull('Int'),
     })
-    t.field('createdAt', { type: 'DateTime' })
-    t.field('updatedAt', { type: 'DateTime' })
+    t.nonNull.field('createdAt', { type: 'DateTime' })
+    t.nonNull.field('updatedAt', { type: 'DateTime' })
     t.field('user', {
-      type: User,
-      resolve: async (root, args, { prisma }) => {
-        const user = await prisma.user.findFirst({
+      type: nullable(User),
+      resolve: async (parent, _args, context: Context) => {
+        return await context.prisma.user.findUnique({
           where: {
-            id: root.userId,
+            id: parent.userId,
           },
         })
-        return user
       },
     })
-    t.field('userId', {
-      type: nonNull('Int'),
+    t.nonNull.field('userId', {
+      type: nullable('Int'),
     })
-    t.string('bio')
+    t.nonNull.string('bio')
   },
 })
 
 export const User = objectType({
   name: 'User',
   definition(t) {
-    t.field('id', {
+    t.nonNull.field('id', {
       type: nonNull('Int'),
     })
-    t.field('createdAt', { type: 'DateTime' })
-    t.field('updatedAt', { type: 'DateTime' })
-    t.field('username', {
+    t.nonNull.field('createdAt', { type: 'DateTime' })
+    t.nonNull.field('updatedAt', { type: 'DateTime' })
+    t.nonNull.field('username', {
       type: nonNull('String'),
     })
-    t.field('email', {
+    t.nonNull.field('email', {
       type: nonNull('String'),
     })
     t.field('profile', {
-      type: Profile,
-      resolve: async (root, args, { prisma }) => {
-        const profile = await prisma.profile.findFirst({
+      type: nullable(Profile),
+      resolve: async (parent, args, context: Context) => {
+        return await context.prisma.profile.findFirst({
           where: {
-            userId: root.id,
+            userId: parent.id,
           },
         })
-        return profile
       },
     })
     t.list.field('blogs', {
       type: Blog,
-      resolve: async (root, args, { prisma }) => {
-        const blogs = await prisma.blog.findMany({
+      resolve: async (parent, args, context: Context) => {
+        return await context.prisma.blog.findMany({
           where: {
-            authorId: root.id,
+            authorId: parent.id,
           },
         })
-        return blogs
       },
     })
-    t.list.field('blogPosts', {
-      type: BlogPost,
-      resolve: async (root, args, { prisma }) => {
-        const blogPosts = await prisma.blogPost.findMany({
+    t.nonNull.list.field('blogPosts', {
+      type: nullable(BlogPost),
+      resolve: async (parent, args, context: Context) => {
+         return await context.prisma.blogPost.findMany({
           where: {
-            authorId: root.id,
+            authorId: parent.id,
           },
         })
-        return blogPosts
       },
     })
-    t.list.nonNull.field('blogComments', {
-      type: BlogComment,
-      resolve: async (root, args, { prisma }) => {
-        const blogComments = await prisma.blogComment.findMany({
+    t.nonNull.list.field('blogComments', {
+      type: nullable(BlogComment),
+      resolve: async (parent, args, context: Context) => {
+        return await context.prisma.blogComment.findMany({
           where: {
-            authorId: root.id,
+            authorId: parent.id,
           },
         })
-        return blogComments
       },
     })
   },
@@ -104,38 +98,38 @@ export const User = objectType({
 export const Blog = objectType({
   name: 'Blog',
   definition(t) {
-    t.field('id', {
+    t.nonNull.field('id', {
       type: nonNull('Int'),
     })
-    t.field('createdAt', { type: 'DateTime' })
-    t.field('updatedAt', { type: 'DateTime' })
+    t.nonNull.field('createdAt', { type: 'DateTime' })
+    t.nonNull.field('updatedAt', { type: 'DateTime' })
     t.field('author', {
       type: User,
-      resolve: async (root, args, { prisma }) => {
-        const user = await prisma.user.findFirst({
+      resolve: async (parent, args, context: Context) => {
+        return await context.prisma.user.findUnique({
           where: {
-            id: root.authorId,
+            id: parent.authorId,
           },
         })
-        return user
       },
     })
-    t.field('authorId', {
-      type: nonNull('Int'),
+    t.nonNull.field('authorId', {
+      type: 'Int',
     })
-    t.field('name', {
+    t.nonNull.field('name', {
       type: 'String',
     })
-    t.string('description')
-    t.list.field('blogPosts', {
-      type: BlogPost,
-      resolve: async (root, args, { prisma }) => {
-        const blogs = await prisma.blogPost.findMany({
+    t.field('description',{
+      type: 'String'
+    })
+    t.nonNull.list.field('blogPosts', {
+      type: nullable(BlogPost),
+      resolve: async (parent, args, context: Context) => {
+        return await context.prisma.blogPost.findMany({
           where: {
-            blogId: root.id,
+            blogId: parent.id,
           },
         })
-        return blogs
       },
     })
   },
@@ -144,57 +138,54 @@ export const Blog = objectType({
 export const BlogPost = objectType({
   name: 'BlogPost',
   definition(t) {
-    t.field('id', {
+    t.nonNull.field('id', {
       type: nonNull('Int'),
     })
-    t.field('createdAt', { type: 'DateTime' })
-    t.field('updatedAt', { type: 'DateTime' })
+    t.nonNull.field('createdAt', { type: 'DateTime' })
+    t.nonNull.field('updatedAt', { type: 'DateTime' })
     t.field('author', {
       type: User,
-      resolve: async (root, args, { prisma }) => {
-        const user = await prisma.user.findFirst({
+      resolve: async (parent, args, context: Context) => {
+        return await context.prisma.user.findFirst({
           where: {
-            id: root.authorId,
+            id: parent.authorId,
           },
         })
-        return user
       },
     })
-    t.field('authorId', {
-      type: nonNull('Int'),
+    t.nonNull.field('authorId', {
+      type: 'Int',
     })
-    t.field('title', {
+    t.nonNull.field('title', {
       type: 'String',
     })
     t.field('content', {
       type: 'String',
     })
-    t.field('published', {
+    t.nonNull.field('published', {
       type: 'Boolean',
     })
     t.field('blog', {
       type: Blog,
-      resolve: async (root, args, { prisma }) => {
-        const blog = await prisma.blog.findFirst({
+      resolve: async (parent, args, context: Context) => {
+        return await context.prisma.blog.findFirst({
           where: {
-            id: root.blogId,
+            id: parent.blogId,
           },
         })
-        return blog
       },
     })
     t.field('blogId', {
       type: nonNull('Int'),
     })
-    t.list.field('blogComments', {
-      type: BlogComment,
-      resolve: async (root, args, { prisma }) => {
-        const blogComments = await prisma.blogComment.findMany({
+    t.nonNull.list.field('blogComments', {
+      type: nullable(BlogComment),
+      resolve: async (parent, args, context: Context) => {
+        return await context.prisma.blogComment.findMany({
           where: {
-            blogPostId: root.id,
+            blogPostId: parent.id,
           },
         })
-        return blogComments
       },
     })
   },
@@ -203,69 +194,65 @@ export const BlogPost = objectType({
 export const BlogComment = objectType({
   name: 'BlogComment',
   definition(t) {
-    t.field('id', {
+    t.nonNull.field('id', {
       type: nonNull('Int'),
     })
-    t.field('createdAt', { type: 'DateTime' })
-    t.field('updatedAt', { type: 'DateTime' })
+    t.nonNull.field('createdAt', { type: 'DateTime' })
+    t.nonNull.field('updatedAt', { type: 'DateTime' })
     t.field('author', {
       type: User,
-      resolve: async (root, args, { prisma }) => {
-        const user = await prisma.user.findFirst({
+      resolve: async (parent, args, context: Context) => {
+        return await context.prisma.user.findFirst({
           where: {
-            id: root.authorId,
+            id: parent.authorId,
           },
         })
-        return user
       },
     })
-    t.field('authorId', {
+    t.nonNull.field('authorId', {
       type: nonNull('Int'),
     })
     t.field('blogPost', {
       type: BlogPost,
-      resolve: async (root, args, { prisma }) => {
-        const blogPost = await prisma.blogPost.findFirst({
+      resolve: async (parent, args, context: Context) => {
+        return await context.prisma.blogPost.findFirst({
           where: {
-            id: root.blogPostId,
+            id: parent.blogPostId,
           },
         })
-        return blogPost
       },
     })
-    t.field('blogPostId', {
-      type: nonNull('Int'),
+    t.nonNull.field('blogPostId', {
+      type: 'Int',
     })
     t.field('content', {
       type: 'String',
     })
     t.nullable.field('parent', {
       type: BlogComment,
-      resolve: async (root, args, { prisma }) => {
-        if (root.parentId) {
-          const blogComment = await prisma.blogComment.findFirst({
+      resolve: async (parent, args, context: Context) => {
+          if (!parent.parentId) {
+            return null
+          }
+
+          return await context.prisma.blogComment.findFirst({
             where: {
-              id: root.parentId,
+              id: parent.parentId,
             },
           })
-          return blogComment
-        } else {
-          return null
-        }
       },
     })
-    t.nullable.field('parentId', {
+    t.field('parentId', {
       type: 'Int',
     })
-    t.list.field('blogComments', {
-      type: BlogComment,
-      resolve: async (root, args, { prisma }) => {
-        const blogComments = await prisma.blogComment.findMany({
+    t.nonNull.list.field('blogComments', {
+      type: nullable(BlogComment),
+      resolve: async (parent, args, context: Context) => {
+        return await context.prisma.blogComment.findMany({
           where: {
-            parentId: root.id,
+            parentId: parent.id,
           },
         })
-        return blogComments
       },
     })
   },
@@ -672,6 +659,16 @@ export const schema = makeSchema({
         module: '@prisma/client',
         alias: 'prisma',
       },
+      {
+        module: __dirname + '/db.ts',
+        alias: 'db',
+        typeMatch(type, defaultRegex) {
+          return new RegExp(
+            `(?:interface|type|class|enum)\\s+(${type.name}Model)\\W`,
+            'g',
+          )
+        }
+      }
     ],
   },
 })
