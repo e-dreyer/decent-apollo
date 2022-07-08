@@ -2,14 +2,32 @@
 ### Do not make changes to this file directly
 
 
+"""
+Represents a topic or group of related BlogPosts. All BlogPosts are stored under a certain Blog
+"""
 type Blog {
+  """The User that created the Blog"""
   author: User
+
+  """The unique Id of the User that created the Blog"""
   authorId: Int!
+
+  """All BlogPosts that belongs to the Blog"""
   blogPosts: [BlogPost]!
+
+  """Time of creation"""
   createdAt: DateTime!
+
+  """A public human readable and customizable description of the Blog"""
   description: String
+
+  """The unique Id of the Blog"""
   id: Int!
+
+  """The unique human readable name of the Blog"""
   name: String!
+
+  """Time of last update"""
   updatedAt: DateTime!
 }
 
@@ -18,17 +36,43 @@ input BlogByIdInput {
   id: Int!
 }
 
+"""User created replies to BlogPosts or other BlogComments"""
 type BlogComment {
+  """The User that created the BlogComment"""
   author: User
+
+  """The Id of the User that created the BlogComment"""
   authorId: Int!
+
+  """The BlogComments that are children of this BlogComment"""
   blogComments: [BlogComment]!
+
+  """The BlogPost that the BlogComment belongs to"""
   blogPost: BlogPost
+
+  """The Id of the BlogPost that the BlogComment belongs to"""
   blogPostId: Int!
+
+  """The User created content of the BlogComment"""
   content: String
+
+  """Time of creation"""
   createdAt: DateTime!
+
+  """The unique Id of the BlogComment"""
   id: Int!
+
+  """
+  The Parent BlogComment of the BlogComment. Can be Null if the BlogComment is a direct reply to the BlogPost and not to a BlogComment
+  """
   parent: BlogComment
+
+  """
+  The Id of the Parent BlogComment. Can be Null if the BlogComment has no Parent
+  """
   parentId: Int
+
+  """Time of last update"""
   updatedAt: DateTime!
 }
 
@@ -61,17 +105,41 @@ input BlogCommentsByUserIdInput {
   userId: Int!
 }
 
+"""Represents a User created BlogPost that belongs to a User and a Blog"""
 type BlogPost {
+  """The unique User that created the BlogPost"""
   author: User
+
+  """The unique Id of the User that created the BlogPost"""
   authorId: Int!
+
+  """The Blog that the BlogPost belongs to"""
   blog: Blog
+
+  """All BlogComments that belong to the BlogPost"""
   blogComments: [BlogComment]!
+
+  """The Id of the Blog that the BlogPost belongs to"""
   blogId: Int!
+
+  """The human readable Content set by the User"""
   content: String
+
+  """Time of creation"""
   createdAt: DateTime!
+
+  """The unique Id of the BlogPost"""
   id: Int!
+
+  """
+  Boolean value of whether the User has published the BlogPost and want it to be shown publicly
+  """
   published: Boolean!
+
+  """The human readable Title set by the User"""
   title: String!
+
+  """Time of last update"""
   updatedAt: DateTime!
 }
 
@@ -111,12 +179,28 @@ input PostOrderById {
   id: SortOrder
 }
 
+"""
+Stores information regarding a User. Each User can only have one Profile
+"""
 type Profile {
+  """
+  A customizable personal message or description a User can display publicly on their Profile
+  """
   bio: String!
+
+  """Time of creation"""
   createdAt: DateTime!
+
+  """Unique Id of the Profile"""
   id: Int!
+
+  """Time of last update"""
   updatedAt: DateTime!
+
+  """The unique User that the Profile belongs to"""
   user: User
+
+  """Unique Id of the User that the Profile belongs to"""
   userId: Int!
 }
 
@@ -182,15 +266,35 @@ enum SortOrder {
   desc
 }
 
+"""
+Represents a unique User of the App. The User is used as reference of ownership for all other Objects
+"""
 type User {
+  """All BlogComments that the User created and belongs to them"""
   blogComments: [BlogComment]!
+
+  """All BlogPosts that the User created and belongs to them"""
   blogPosts: [BlogPost]!
+
+  """All Blogs that the User created and belongs to them"""
   blogs: [Blog]
+
+  """Time of creation"""
   createdAt: DateTime!
+
+  """Unique email address of the User"""
   email: String!
+
+  """Unique Id of the User"""
   id: Int!
+
+  """The Profile that belongs to the User"""
   profile: Profile
+
+  """Time of last update"""
   updatedAt: DateTime!
+
+  """Unique human readable username of the User"""
   username: String!
 }
 
