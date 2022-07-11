@@ -392,6 +392,21 @@ const Query = objectType({
       },
     })
 
+    t.field('userByEmail', {
+      type: User,
+      description: `Query for a single User by Email.`,
+      args: {
+        data: nonNull(arg({ type: UserByEmailInput })),
+      },
+      resolve: async (_parent, args, context: Context) => {
+        return context.prisma.user.findUnique({
+          where: {
+            email: args.email,
+          },
+        })
+      },
+    })
+
     t.field('profileById', {
       type: Profile,
       description: 'Query for a single Profile by Id',

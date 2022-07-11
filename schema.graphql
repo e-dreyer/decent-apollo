@@ -257,6 +257,9 @@ type Query {
   """Query for a single Profile by Id"""
   profileById(data: ProfileByIdInput!): Profile
 
+  """Query for a single User by Email."""
+  userByEmail(data: UserByEmailInput!): User
+
   """Query for a single User by Id"""
   userById(userByIdInput: UserByIdInput!): User
 }
@@ -296,6 +299,11 @@ type User {
 
   """Unique human readable username of the User"""
   username: String
+}
+
+"""Input arguments for quering Users by Email"""
+input UserByEmailInput {
+  email: String!
 }
 
 """Input arguments for querying Users by Id"""
