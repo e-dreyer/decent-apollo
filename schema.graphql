@@ -3,7 +3,7 @@
 
 
 """
-Represents a topic or group of related BlogPosts. All BlogPosts are stored under a certain Blog
+Represents a topic or group of related BlogPosts. All BlogPosts are stored under a certain Blog.
 """
 type Blog {
   """The User that created the Blog"""
@@ -18,7 +18,7 @@ type Blog {
   """Time of creation"""
   createdAt: DateTime!
 
-  """A public human readable and customizable description of the Blog"""
+  """A public human readable and customizable description of the Blog."""
   description: String
 
   """The unique Id of the Blog"""
@@ -63,12 +63,12 @@ type BlogComment {
   id: String!
 
   """
-  The Parent BlogComment of the BlogComment. Can be Null if the BlogComment is a direct reply to the BlogPost and not to a BlogComment
+  The Parent BlogComment of the BlogComment. Can be Null if the BlogComment is a direct reply to the BlogPost and not to a BlogComment.
   """
   parent: BlogComment
 
   """
-  The Id of the Parent BlogComment. Can be Null if the BlogComment has no Parent
+  The Id of the Parent BlogComment. Can be Null if the BlogComment has no Parent.
   """
   parentId: String
 
@@ -105,12 +105,12 @@ input BlogCommentsByUserIdInput {
   id: String!
 }
 
-"""Represents a User created BlogPost that belongs to a User and a Blog"""
+"""Represents a User created BlogPost that belongs to a User and a Blog."""
 type BlogPost {
   """The unique User that created the BlogPost"""
   author: User
 
-  """The unique Id of the User that created the BlogPost"""
+  """The unique Id of the User that created the BlogPost."""
   authorId: String!
 
   """The Blog that the BlogPost belongs to"""
@@ -132,7 +132,7 @@ type BlogPost {
   id: String!
 
   """
-  Boolean value of whether the User has published the BlogPost and want it to be shown publicly
+  Boolean value of whether the User has published the BlogPost and want it to be shown publicly.
   """
   published: Boolean!
 
@@ -180,11 +180,11 @@ input PostOrderById {
 }
 
 """
-Stores information regarding a User. Each User can only have one Profile
+Stores information regarding a User. Each User can only have one Profile.
 """
 type Profile {
   """
-  A customizable personal message or description a User can display publicly on their Profile
+  A customizable personal message or description a User can display publicly on their Profile.
   """
   bio: String!
 
@@ -267,7 +267,7 @@ enum SortOrder {
 }
 
 """
-Represents a unique User of the App. The User is used as reference of ownership for all other Objects
+Represents a unique User of the App. The User is used as reference of ownership for all other Objects.
 """
 type User {
   """All BlogComments that the User created and belongs to them"""
@@ -295,7 +295,7 @@ type User {
   updatedAt: DateTime!
 
   """Unique human readable username of the User"""
-  username: String!
+  username: String
 }
 
 """Input arguments for querying Users by Id"""
