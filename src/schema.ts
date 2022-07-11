@@ -15,70 +15,74 @@ export const DateTime = asNexusMethod(DateTimeResolver, 'DateTime')
 
 export const Profile = objectType({
   name: 'Profile',
-  description: 'Stores information regarding a User. Each User can only have one Profile',
+  description: `Stores information regarding a User. Each User can only have one Profile.`,
   definition(t) {
     t.nonNull.field('id', {
       type: nonNull('String'),
-      description: 'Unique Id of the Profile'
+      description: 'Unique Id of the Profile',
     })
-    t.nonNull.field('createdAt', { 
+    t.nonNull.field('createdAt', {
       type: 'DateTime',
-      description: 'Time of creation'
+      description: 'Time of creation',
     })
-    t.nonNull.field('updatedAt', { 
+    t.nonNull.field('updatedAt', {
       type: 'DateTime',
-      description: 'Time of last update'
+      description: 'Time of last update',
     })
-    t.field('user', {
+    t.nullable.field('user', {
       type: nullable(User),
       description: 'The unique User that the Profile belongs to',
       resolve: async (parent, _args, context: Context) => {
-        return await context.prisma.user.findUnique({
-          where: {
-            id: parent.userId,
-          },
-        })
+        if (parent.userId) {
+          return await context.prisma.user.findUnique({
+            where: {
+              id: parent.userId,
+            },
+          })
+        } else {
+          return null
+        }
       },
     })
     t.nonNull.field('userId', {
       type: nullable('String'),
-      description: 'Unique Id of the User that the Profile belongs to'
+      description: 'Unique Id of the User that the Profile belongs to',
     })
     t.nonNull.field('bio', {
       type: 'String',
-      description: 'A customizable personal message or description a User can display publicly on their Profile'
+      description: `A customizable personal message or description a User can display publicly on their Profile.`,
     })
   },
 })
 
 export const User = objectType({
   name: 'User',
-  description: 'Represents a unique User of the App. The User is used as reference of ownership for all other Objects',
+  description: `Represents a unique User of the App. The User is used as reference of ownership for all other Objects.`,
   definition(t) {
     t.nonNull.field('id', {
       type: nonNull('String'),
-      description: 'Unique Id of the User'
+      description: 'Unique Id of the User',
     })
-    t.nonNull.field('createdAt', { 
+    t.nonNull.field('createdAt', {
       type: 'DateTime',
-      description: 'Time of creation'
+      description: 'Time of creation',
     })
-    t.nonNull.field('updatedAt', { 
+    t.nonNull.field('updatedAt', {
       type: 'DateTime',
-      description: 'Time of last update'
+      description: 'Time of last update',
     })
-    t.nonNull.field('username', {
-      type: nonNull('String'),
-      description: 'Unique human readable username of the User'
+    t.nullable.field('username', {
+      type: nullable('String'),
+      description: 'Unique human readable username of the User',
     })
     t.nonNull.field('email', {
       type: nonNull('String'),
-      description: 'Unique email address of the User'
+      description: 'Unique email address of the User',
     })
     t.field('profile', {
       type: nullable(Profile),
       description: 'The Profile that belongs to the User',
-      resolve: async (parent, args, context: Context) => {
+      resolve: async (parent, _args, context: Context) => {
         return await context.prisma.profile.findFirst({
           where: {
             userId: parent.id,
@@ -89,7 +93,7 @@ export const User = objectType({
     t.list.field('blogs', {
       type: Blog,
       description: 'All Blogs that the User created and belongs to them',
-      resolve: async (parent, args, context: Context) => {
+      resolve: async (parent, _args, context: Context) => {
         return await context.prisma.blog.findMany({
           where: {
             authorId: parent.id,
@@ -100,8 +104,8 @@ export const User = objectType({
     t.nonNull.list.field('blogPosts', {
       type: nullable(BlogPost),
       description: 'All BlogPosts that the User created and belongs to them',
-      resolve: async (parent, args, context: Context) => {
-         return await context.prisma.blogPost.findMany({
+      resolve: async (parent, _args, context: Context) => {
+        return await context.prisma.blogPost.findMany({
           where: {
             authorId: parent.id,
           },
@@ -111,7 +115,7 @@ export const User = objectType({
     t.nonNull.list.field('blogComments', {
       type: nullable(BlogComment),
       description: 'All BlogComments that the User created and belongs to them',
-      resolve: async (parent, args, context: Context) => {
+      resolve: async (parent, _args, context: Context) => {
         return await context.prisma.blogComment.findMany({
           where: {
             authorId: parent.id,
@@ -124,24 +128,24 @@ export const User = objectType({
 
 export const Blog = objectType({
   name: 'Blog',
-  description: 'Represents a topic or group of related BlogPosts. All BlogPosts are stored under a certain Blog',
+  description: `Represents a topic or group of related BlogPosts. All BlogPosts are stored under a certain Blog.`,
   definition(t) {
     t.nonNull.field('id', {
       type: nonNull('String'),
-      description: 'The unique Id of the Blog'
+      description: 'The unique Id of the Blog',
     })
-    t.nonNull.field('createdAt', { 
+    t.nonNull.field('createdAt', {
       type: 'DateTime',
-      description: 'Time of creation'
+      description: 'Time of creation',
     })
-    t.nonNull.field('updatedAt', { 
+    t.nonNull.field('updatedAt', {
       type: 'DateTime',
-      description: 'Time of last update'
+      description: 'Time of last update',
     })
     t.field('author', {
       type: User,
       description: 'The User that created the Blog',
-      resolve: async (parent, args, context: Context) => {
+      resolve: async (parent, _args, context: Context) => {
         return await context.prisma.user.findUnique({
           where: {
             id: parent.authorId,
@@ -151,20 +155,20 @@ export const Blog = objectType({
     })
     t.nonNull.field('authorId', {
       type: 'String',
-      description: 'The unique Id of the User that created the Blog'
+      description: 'The unique Id of the User that created the Blog',
     })
     t.nonNull.field('name', {
       type: 'String',
-      description: 'The unique human readable name of the Blog'
+      description: 'The unique human readable name of the Blog',
     })
-    t.field('description',{
+    t.field('description', {
       type: 'String',
-      description: 'A public human readable and customizable description of the Blog'
+      description: `A public human readable and customizable description of the Blog.`,
     })
     t.nonNull.list.field('blogPosts', {
       type: nullable(BlogPost),
       description: 'All BlogPosts that belongs to the Blog',
-      resolve: async (parent, args, context: Context) => {
+      resolve: async (parent, _args, context: Context) => {
         return await context.prisma.blogPost.findMany({
           where: {
             blogId: parent.id,
@@ -177,24 +181,24 @@ export const Blog = objectType({
 
 export const BlogPost = objectType({
   name: 'BlogPost',
-  description: 'Represents a User created BlogPost that belongs to a User and a Blog',
+  description: `Represents a User created BlogPost that belongs to a User and a Blog.`,
   definition(t) {
     t.nonNull.field('id', {
       type: nonNull('String'),
-      description: 'The unique Id of the BlogPost'
+      description: 'The unique Id of the BlogPost',
     })
-    t.nonNull.field('createdAt', { 
+    t.nonNull.field('createdAt', {
       type: 'DateTime',
-      description: 'Time of creation'
+      description: 'Time of creation',
     })
-    t.nonNull.field('updatedAt', { 
+    t.nonNull.field('updatedAt', {
       type: 'DateTime',
-      description: 'Time of last update'
+      description: 'Time of last update',
     })
     t.field('author', {
       type: User,
       description: 'The unique User that created the BlogPost',
-      resolve: async (parent, args, context: Context) => {
+      resolve: async (parent, _args, context: Context) => {
         return await context.prisma.user.findFirst({
           where: {
             id: parent.authorId,
@@ -204,11 +208,11 @@ export const BlogPost = objectType({
     })
     t.nonNull.field('authorId', {
       type: 'String',
-      description: "The unique Id of the User that created the BlogPost"
+      description: `The unique Id of the User that created the BlogPost.`,
     })
     t.nonNull.field('title', {
       type: 'String',
-      description: 'The human readable Title set by the User'
+      description: 'The human readable Title set by the User',
     })
     t.field('content', {
       type: 'String',
@@ -216,12 +220,12 @@ export const BlogPost = objectType({
     })
     t.nonNull.field('published', {
       type: 'Boolean',
-      description: 'Boolean value of whether the User has published the BlogPost and want it to be shown publicly',
+      description: `Boolean value of whether the User has published the BlogPost and want it to be shown publicly.`,
     })
     t.field('blog', {
       type: Blog,
       description: 'The Blog that the BlogPost belongs to',
-      resolve: async (parent, args, context: Context) => {
+      resolve: async (parent, _args, context: Context) => {
         return await context.prisma.blog.findFirst({
           where: {
             id: parent.blogId,
@@ -231,12 +235,12 @@ export const BlogPost = objectType({
     })
     t.field('blogId', {
       type: nonNull('String'),
-      description: 'The Id of the Blog that the BlogPost belongs to'
+      description: 'The Id of the Blog that the BlogPost belongs to',
     })
     t.nonNull.list.field('blogComments', {
       type: nullable(BlogComment),
       description: 'All BlogComments that belong to the BlogPost',
-      resolve: async (parent, args, context: Context) => {
+      resolve: async (parent, _args, context: Context) => {
         return await context.prisma.blogComment.findMany({
           where: {
             blogPostId: parent.id,
@@ -255,18 +259,18 @@ export const BlogComment = objectType({
       type: nonNull('String'),
       description: 'The unique Id of the BlogComment',
     })
-    t.nonNull.field('createdAt', { 
+    t.nonNull.field('createdAt', {
       type: 'DateTime',
-      description: 'Time of creation'
+      description: 'Time of creation',
     })
-    t.nonNull.field('updatedAt', { 
+    t.nonNull.field('updatedAt', {
       type: 'DateTime',
-      description: 'Time of last update'
+      description: 'Time of last update',
     })
     t.field('author', {
       type: User,
       description: 'The User that created the BlogComment',
-      resolve: async (parent, args, context: Context) => {
+      resolve: async (parent, _args, context: Context) => {
         return await context.prisma.user.findFirst({
           where: {
             id: parent.authorId,
@@ -281,7 +285,7 @@ export const BlogComment = objectType({
     t.field('blogPost', {
       type: BlogPost,
       description: 'The BlogPost that the BlogComment belongs to',
-      resolve: async (parent, args, context: Context) => {
+      resolve: async (parent, _args, context: Context) => {
         return await context.prisma.blogPost.findFirst({
           where: {
             id: parent.blogPostId,
@@ -299,27 +303,27 @@ export const BlogComment = objectType({
     })
     t.nullable.field('parent', {
       type: BlogComment,
-      description: 'The Parent BlogComment of the BlogComment. Can be Null if the BlogComment is a direct reply to the BlogPost and not to a BlogComment',
-      resolve: async (parent, args, context: Context) => {
-          if (!parent.parentId) {
-            return null
-          }
-
+      description: `The Parent BlogComment of the BlogComment. Can be Null if the BlogComment is a direct reply to the BlogPost and not to a BlogComment.`,
+      resolve: async (parent, _args, context: Context) => {
+        if (!parent.parentId) {
+          return null
+        } else {
           return await context.prisma.blogComment.findFirst({
             where: {
               id: parent.parentId,
             },
           })
+        }
       },
     })
     t.field('parentId', {
       type: 'String',
-      description: 'The Id of the Parent BlogComment. Can be Null if the BlogComment has no Parent',
+      description: `The Id of the Parent BlogComment. Can be Null if the BlogComment has no Parent.`,
     })
     t.nonNull.list.field('blogComments', {
       type: nullable(BlogComment),
       description: 'The BlogComments that are children of this BlogComment',
-      resolve: async (parent, args, context: Context) => {
+      resolve: async (parent, _args, context: Context) => {
         return await context.prisma.blogComment.findMany({
           where: {
             parentId: parent.id,
@@ -373,8 +377,8 @@ const Query = objectType({
       },
     })
 
-    t.field('userById', {
-      type: User,
+    t.nullable.field('userById', {
+      type: nullable(User),
       description: 'Query for a single User by Id',
       args: {
         userByIdInput: nonNull(arg({ type: UserByIdInput })),
@@ -497,9 +501,7 @@ const Query = objectType({
       type: BlogComment,
       description: 'Query for all BlogComments that belong to a specific User',
       args: {
-        data: nonNull(
-          arg({ type: BlogCommentsByUserIdInput }),
-        ),
+        data: nonNull(arg({ type: BlogCommentsByUserIdInput })),
       },
       resolve: async (_parent, args, context: Context) => {
         return context.prisma.blogComment.findMany({
@@ -515,9 +517,7 @@ const Query = objectType({
       description:
         'Query for all BlogComments that belong to a specific BlogPost',
       args: {
-        data: nonNull(
-          arg({ type: BlogCommentsByPostIdInput }),
-        ),
+        data: nonNull(arg({ type: BlogCommentsByPostIdInput })),
       },
       resolve: async (_parent, args, context: Context) => {
         return context.prisma.blogComment.findMany({
@@ -533,9 +533,7 @@ const Query = objectType({
       description:
         'Query for all BlogComments that belong to a specific Parent BlogComment',
       args: {
-        data: nonNull(
-          arg({ type: BlogCommentsByParentCommentIdInput }),
-        ),
+        data: nonNull(arg({ type: BlogCommentsByParentCommentIdInput })),
       },
       resolve: async (_parent, args, context: Context) => {
         return context.prisma.blogComment.findMany({
@@ -565,6 +563,16 @@ const UserByIdInput = inputObjectType({
   description: 'Input arguments for querying Users by Id',
   definition(t) {
     t.nonNull.field('id', {
+      type: 'String',
+    })
+  },
+})
+
+const UserByEmailInput = inputObjectType({
+  name: 'UserByEmailInput',
+  description: 'Input arguments for quering Users by Email',
+  definition(t) {
+    t.nonNull.field('email', {
       type: 'String',
     })
   },
@@ -734,13 +742,13 @@ export const schema = makeSchema({
       {
         module: __dirname + '/db.ts',
         alias: 'db',
-        typeMatch(type, defaultRegex) {
+        typeMatch(type) {
           return new RegExp(
             `(?:interface|type|class|enum)\\s+(${type.name}Model)\\W`,
             'g',
           )
-        }
-      }
+        },
+      },
     ],
   },
 })
