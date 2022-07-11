@@ -17,7 +17,7 @@
     "generate:nexus": "ts-node --transpile-only src/schema",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "format": "prettier --config .prettierrc.json --write \"**/*.+(js|jsx|json|yml|ymal|css|md|vue)*"
+    "format": "prettier --config .prettierrc.json --write \"**/*.+(js|jsx|json|yml|ymal|css|md|vue)*\""
   },
   "prettier": {
     "semi": false,
