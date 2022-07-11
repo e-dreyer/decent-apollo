@@ -7,6 +7,7 @@ import {
   asNexusMethod,
   enumType,
   nullable,
+  extendType,
 } from 'nexus'
 import { DateTimeResolver } from 'graphql-scalars'
 import { Context } from './context'
@@ -334,8 +335,8 @@ export const BlogComment = objectType({
   },
 })
 
-const Query = objectType({
-  name: 'Query',
+const Query = extendType({
+  type: 'Query',
   definition(t) {
     t.list.field('allUsers', {
       type: User,
@@ -378,15 +379,15 @@ const Query = objectType({
     })
 
     t.nullable.field('userById', {
-      type: nullable(User),
+      type: User,
       description: 'Query for a single User by Id',
       args: {
-        userByIdInput: nonNull(arg({ type: UserByIdInput })),
+        data: nonNull(arg({ type: UserByIdInput })),
       },
       resolve: async (_parent, args, context: Context) => {
         return context.prisma.user.findUnique({
           where: {
-            id: args.userByIdInput.id || undefined,
+            id: args.data.id,
           },
         })
       },
@@ -401,7 +402,7 @@ const Query = objectType({
       resolve: async (_parent, args, context: Context) => {
         return context.prisma.user.findUnique({
           where: {
-            email: args.email,
+            email: args.data.email,
           },
         })
       },
@@ -753,16 +754,6 @@ export const schema = makeSchema({
       {
         module: '@prisma/client',
         alias: 'prisma',
-      },
-      {
-        module: __dirname + '/db.ts',
-        alias: 'db',
-        typeMatch(type) {
-          return new RegExp(
-            `(?:interface|type|class|enum)\\s+(${type.name}Model)\\W`,
-            'g',
-          )
-        },
       },
     ],
   },

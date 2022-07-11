@@ -25,7 +25,7 @@ declare global {
 
 
 declare global {
-  interface NexusGen extends NexusGenTypes {}
+  type NexusGen = NexusGenTypes
 }
 
 export interface NexusGenInputs {
@@ -328,7 +328,7 @@ export interface NexusGenArgTypes {
       data: NexusGenInputs['UserByEmailInput']; // UserByEmailInput!
     }
     userById: { // args
-      userByIdInput: NexusGenInputs['UserByIdInput']; // UserByIdInput!
+      data: NexusGenInputs['UserByIdInput']; // UserByIdInput!
     }
   }
 }
