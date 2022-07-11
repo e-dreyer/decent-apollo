@@ -62,6 +62,9 @@ export interface NexusGenInputs {
   ProfileByIdInput: { // input type
     id: string; // String!
   }
+  UserByEmailInput: { // input type
+    email: string; // String!
+  }
   UserByIdInput: { // input type
     id: string; // String!
   }
@@ -121,7 +124,7 @@ export interface NexusGenObjects {
     email: string; // String!
     id: string; // String!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
-    username: string; // String!
+    username?: string | null; // String
   }
 }
 
@@ -196,6 +199,7 @@ export interface NexusGenFieldTypes {
     blogPostsByUserId: Array<NexusGenRootTypes['BlogPost'] | null> | null; // [BlogPost]
     blogsByUserId: Array<NexusGenRootTypes['Blog'] | null> | null; // [Blog]
     profileById: NexusGenRootTypes['Profile'] | null; // Profile
+    userByEmail: NexusGenRootTypes['User'] | null; // User
     userById: NexusGenRootTypes['User'] | null; // User
   }
   User: { // field return type
@@ -207,7 +211,7 @@ export interface NexusGenFieldTypes {
     id: string; // String!
     profile: NexusGenRootTypes['Profile'] | null; // Profile
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
-    username: string; // String!
+    username: string | null; // String
   }
 }
 
@@ -272,6 +276,7 @@ export interface NexusGenFieldTypeNames {
     blogPostsByUserId: 'BlogPost'
     blogsByUserId: 'Blog'
     profileById: 'Profile'
+    userByEmail: 'User'
     userById: 'User'
   }
   User: { // field return type name
@@ -318,6 +323,9 @@ export interface NexusGenArgTypes {
     }
     profileById: { // args
       data: NexusGenInputs['ProfileByIdInput']; // ProfileByIdInput!
+    }
+    userByEmail: { // args
+      data: NexusGenInputs['UserByEmailInput']; // UserByEmailInput!
     }
     userById: { // args
       userByIdInput: NexusGenInputs['UserByIdInput']; // UserByIdInput!
