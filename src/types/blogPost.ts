@@ -161,6 +161,49 @@ export const BlogPostQueries = extendType({
   },
 })
 
+export const BlogPostMutations = extendType({
+  type: 'Mutation',
+
+  definition(t) {
+    // TODO: Add authorization and authentication
+    t.nullable.field('createBlogPost', {
+      type: nullable('Blog'),
+
+      description: 'Mutation for creating a new BlogPost as a User',
+
+      args: {
+        data: nonNull(arg({ type: CreateBlogPostInput })),
+      },
+
+      resolve: async (_parent, args, context: Context) => {
+        return await context.prisma.blogPost.create({
+          data: { ...args },
+        })
+      },
+    })
+
+    // TODO: Add authorization and authentication
+    t.nullable.field('updateBlogPost', {
+      type: 'Blog',
+
+      description: 'Mutation for updating an existing BlogPost as a User',
+
+      args: {
+        data: nonNull(arg({ type: UpdateBlogPostInput })),
+      },
+
+      resolve: async (parent, args, context: Context) => {
+        return await context.prisma.blogPost.update({
+          where: {
+            id: args.data.id,
+          },
+          data: { ...args, ...parent },
+        })
+      },
+    })
+  },
+})
+
 export const BlogPostByIdInput = inputObjectType({
   name: 'BlogPostByIdInput',
   description: 'Input arguments for querying BlogPosts by Id',
@@ -190,6 +233,79 @@ export const BlogPostsByBlogIdInput = inputObjectType({
     t.nonNull.field('id', {
       type: 'String',
       description: 'The Id of the Blog that the BlogPost belongs to',
+    })
+  },
+})
+
+// TODO: Add authorization and authentication
+export const CreateBlogPostInput = inputObjectType({
+  name: 'CreateBlogPostInput',
+
+  description: 'Create a new BlogPost as a User',
+
+  definition(t) {
+    t.nonNull.field('authorId', {
+      type: 'String',
+
+      description: 'The Id of the User to create the BlogPost as',
+    })
+
+    t.nonNull.field('title', {
+      type: 'String',
+
+      description: 'The title of the new BlogPost to create',
+    })
+
+    t.nonNull.field('content', {
+      type: 'String',
+
+      description: 'The content of the new BlogPost to create',
+    })
+
+    t.nonNull.field('published', {
+      type: 'Boolean',
+
+      description:
+        'Whether the BlogPost should be immeadiatly visible to other users',
+    })
+
+    t.nonNull.field('blogId', {
+      type: 'String',
+
+      description: 'The Id of the Blog to post the BlogPost under',
+    })
+  },
+})
+
+// TODO: Add authorization and authentication
+export const UpdateBlogPostInput = inputObjectType({
+  name: 'UpdateBlogPostInput',
+
+  description: "Update an existing BlogPost's information",
+
+  definition(t) {
+    t.nonNull.field('id', {
+      type: 'String',
+
+      description: 'The Id of the BlogPost to update',
+    })
+
+    t.nullable.field('content', {
+      type: 'String',
+
+      description: 'The new content of the BlogPost',
+    })
+
+    t.nullable.field('title', {
+      type: 'String',
+
+      description: 'The new title of the BlogPost',
+    })
+
+    t.nullable.field('published', {
+      type: 'Boolean',
+
+      description: 'Whether the BlogPost should be visible to other Users',
     })
   },
 })
