@@ -196,6 +196,49 @@ export const BlogCommentsQueries = extendType({
   },
 })
 
+export const BlogCommentMutations = extendType({
+  type: 'Mutation',
+
+  definition(t) {
+    // TODO: Add authorization and authentication
+    t.nullable.field('createBlogComment', {
+      type: nullable('BlogComment'),
+
+      description: 'Mutation for creating a new BlogComment as a User',
+
+      args: {
+        data: nonNull(arg({ type: CreateBlogCommentInput })),
+      },
+
+      resolve: async (_parent, args, context: Context) => {
+        return await context.prisma.blogComment.create({
+          data: { ...args },
+        })
+      },
+    })
+
+    // TODO: Add authorization and authentication
+    t.nullable.field('UpdateBlogCommentInput', {
+      type: 'BlogComment',
+
+      description: 'Mutation for updating an existing BlogComment as a User',
+
+      args: {
+        data: nonNull(arg({ type: UpdateBlogCommentInput })),
+      },
+
+      resolve: async (parent, args, context: Context) => {
+        return await context.prisma.blogComment.update({
+          where: {
+            id: args.data.id,
+          },
+          data: { ...args, ...parent },
+        })
+      },
+    })
+  },
+})
+
 export const BlogCommentByIdInput = inputObjectType({
   name: 'BlogCommentByIdInput',
   description: 'Input arguments for querying Blogs by Id',
@@ -238,6 +281,60 @@ export const BlogCommentsByParentCommentIdInput = inputObjectType({
     t.nonNull.field('id', {
       type: 'String',
       description: `The Id of the Parent BlogComment of the BlogComment to search for.`,
+    })
+  },
+})
+
+// TODO: Add authorization and authentication
+export const CreateBlogCommentInput = inputObjectType({
+  name: 'CreateBlogCommentInput',
+
+  description: 'Create a new BlogComment as a User',
+
+  definition(t) {
+    t.nonNull.field('authorId', {
+      type: 'String',
+
+      description: 'The Id of the User to create the BlogComment as',
+    })
+
+    t.nonNull.field('content', {
+      type: 'String',
+
+      description: 'The content of the new BlogComment to create',
+    })
+
+    t.nullable.field('parentId', {
+      type: 'String',
+
+      description: 'The parentId of the new BlogComment to create',
+    })
+
+    t.nonNull.field('blogPostId', {
+      type: 'String',
+
+      description: 'The Id of the BlogPost that the BlogComment belongs to',
+    })
+  },
+})
+
+// TODO: Add authorization and authentication
+export const UpdateBlogCommentInput = inputObjectType({
+  name: 'UpdateBlogCommentInput',
+
+  description: "Update an existing BlogComment's information",
+
+  definition(t) {
+    t.nonNull.field('id', {
+      type: 'String',
+
+      description: 'The Id of the BlogComment to update',
+    })
+
+    t.nonNull.field('content', {
+      type: 'String',
+
+      description: 'The new content of the BlogComment',
     })
   },
 })
