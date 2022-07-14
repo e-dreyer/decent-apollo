@@ -228,10 +228,10 @@ export const UserMutations = extendType({
         data: nonNull(arg({ type: UpdateUserInput })),
       },
 
-      resolve: async (parent, args, context: Context) => {
+      resolve: async (_parent, args, context: Context) => {
         return await context.prisma.user.update({
           where: { id: args.data.id },
-          data: { ...args.data, ...parent },
+          data: { ...args.data },
         })
       },
     })

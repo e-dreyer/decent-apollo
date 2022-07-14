@@ -192,12 +192,12 @@ export const BlogPostMutations = extendType({
         data: nonNull(arg({ type: UpdateBlogPostInput })),
       },
 
-      resolve: async (parent, args, context: Context) => {
+      resolve: async (_parent, args, context: Context) => {
         return await context.prisma.blogPost.update({
           where: {
             id: args.data.id,
           },
-          data: { ...args.data, ...parent },
+          data: { ...args.data },
         })
       },
     })
