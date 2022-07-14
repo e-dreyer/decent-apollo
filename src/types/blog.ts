@@ -152,8 +152,8 @@ export const BlogMutations = extendType({
 
   definition(t) {
     // TODO: Add authorization and authentication
-    t.nullable.field('createBlog', {
-      type: nullable('Blog'),
+    t.field('createBlog', {
+      type: 'Blog',
 
       description: 'Mutation for creating a new Blog as a User',
 
@@ -163,7 +163,9 @@ export const BlogMutations = extendType({
 
       resolve: async (_parent, args, context: Context) => {
         return await context.prisma.blog.create({
-          data: { ...args },
+          data: {
+            ...args.data,
+          },
         })
       },
     })
@@ -183,7 +185,7 @@ export const BlogMutations = extendType({
           where: {
             id: args.data.id,
           },
-          data: { ...args, ...parent },
+          data: { ...args.data, ...parent },
         })
       },
     })
@@ -225,19 +227,19 @@ export const CreateBlogInput = inputObjectType({
 
   definition(t) {
     t.nonNull.field('authorId', {
-      type: 'String',
+      type: nonNull('String'),
 
       description: 'The Id of the User to create the Blog as',
     })
 
     t.nonNull.field('name', {
-      type: 'String',
+      type: nonNull('String'),
 
       description: 'The name of the new Blog to create',
     })
 
     t.nonNull.field('description', {
-      type: 'String',
+      type: nonNull('String'),
 
       description: 'The description of the new Blog to create',
     })

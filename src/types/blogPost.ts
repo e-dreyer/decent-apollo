@@ -177,7 +177,7 @@ export const BlogPostMutations = extendType({
 
       resolve: async (_parent, args, context: Context) => {
         return await context.prisma.blogPost.create({
-          data: { ...args },
+          data: { ...args.data },
         })
       },
     })
@@ -197,7 +197,7 @@ export const BlogPostMutations = extendType({
           where: {
             id: args.data.id,
           },
-          data: { ...args, ...parent },
+          data: { ...args.data, ...parent },
         })
       },
     })
@@ -290,19 +290,19 @@ export const UpdateBlogPostInput = inputObjectType({
       description: 'The Id of the BlogPost to update',
     })
 
-    t.nullable.field('content', {
+    t.nonNull.field('content', {
       type: 'String',
 
       description: 'The new content of the BlogPost',
     })
 
-    t.nullable.field('title', {
+    t.nonNull.field('title', {
       type: 'String',
 
       description: 'The new title of the BlogPost',
     })
 
-    t.nullable.field('published', {
+    t.nonNull.field('published', {
       type: 'Boolean',
 
       description: 'Whether the BlogPost should be visible to other Users',

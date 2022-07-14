@@ -212,7 +212,7 @@ export const BlogCommentMutations = extendType({
 
       resolve: async (_parent, args, context: Context) => {
         return await context.prisma.blogComment.create({
-          data: { ...args },
+          data: { ...args.data },
         })
       },
     })
@@ -232,7 +232,7 @@ export const BlogCommentMutations = extendType({
           where: {
             id: args.data.id,
           },
-          data: { ...args, ...parent },
+          data: { ...args.data, ...parent },
         })
       },
     })
