@@ -153,7 +153,7 @@ export const BlogPostQueries = extendType({
       resolve: async (_parent, args, context: Context) => {
         return await context.prisma.blogPost.findMany({
           where: {
-            authorId: args.data.id,
+            blogId: args.data.id,
           },
         })
       },
