@@ -1,5 +1,7 @@
 # decent-apollo
 
+[![Node.js CI](https://github.com/e-dreyer/decent-apollo/actions/workflows/node.js.yml/badge.svg)](https://github.com/e-dreyer/decent-apollo/actions/workflows/node.js.yml)
+
 Simple social media clone of reddit and medium for learning purposes. This repository containes most of the backend code used in the project.
 Although this repository can be used on its own, it is intended to be used in combination with the other decent-app repositories listed in [decent-app](https://github.com/e-dreyer/decent-app.git)
 
